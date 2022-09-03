@@ -24,3 +24,13 @@ a {
     background: black;
   }
 }
+.middleContainer {
+  width: 1320px;
+  margin: 0px auto;
+}
+@media screen and (max-width: 1320px) {
+  .middleContainer {
+    width: 100%;
+    margin: 0;
+  }
+}
