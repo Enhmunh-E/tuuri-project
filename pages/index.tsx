@@ -1,12 +1,16 @@
 import type { NextPage } from "next";
 import { Header } from "../components";
 import styles from "../styles/Home.module.css";
+import dynamic from "next/dynamic";
+
+const Pixi = dynamic(import("../components/Pixi"), { ssr: false });
 
 const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Header />
       {/* Here Lies the Spring and other components */}
+      <Pixi />
       <div style={homeStyles.bottomContainer}>Home</div>
     </div>
   );
