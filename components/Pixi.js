@@ -209,9 +209,9 @@ const PixiComponent = () => {
     });
     app.start();
 
-    // return () => {
-    //   second;
-    // };
+    return () => {
+      app.stop();
+    };
   }, []);
 
   return gameCanvas;
