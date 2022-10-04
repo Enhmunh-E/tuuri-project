@@ -10,8 +10,9 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <Header />
       {/* Here Lies the Spring and other components */}
-      <Pixi />
-      <div style={homeStyles.bottomContainer}>Home</div>
+      <div id="pixi-container">
+        <Pixi />
+      </div>
     </div>
   );
 };

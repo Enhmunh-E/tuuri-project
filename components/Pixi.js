@@ -3,12 +3,12 @@ import * as PIXI from "pixi.js";
 import "pixi-spine";
 
 const PixiComponent = () => {
-  let gameCanvas = <canvas></canvas>;
+  let gameCanvas = <></>;
   let app = PIXI.Application;
 
   useEffect(() => {
     let appWidth = window.innerWidth,
-      appHeight = window.innerHeight,
+      appHeight = window.innerHeight - 60,
       aspectRatio = appWidth / appHeight;
 
     app = new PIXI.Application({
@@ -17,15 +17,13 @@ const PixiComponent = () => {
       backgroundColor: 0xc3dbcb,
     });
 
-    document.body.appendChild(app.view);
+    document.getElementById("pixi-container").appendChild(app.view);
     app.stage.interactive = true;
 
     let textureSize = 400;
     for (let h = 0; h < appHeight; h += textureSize) {
       for (let w = 0; w < appHeight; w += textureSize) {
-        let background = new PIXI.Sprite.from(
-          "../public/spiral/canvas_texture.png"
-        );
+        let background = new PIXI.Sprite.from("/spiral/canvas_texture.png");
         background.position.y = h;
         background.position.x = w;
         background.width = textureSize;
@@ -111,7 +109,7 @@ const PixiComponent = () => {
     };
     // Maybe add to app onLoad?
     for (let i = 0; i < totalCircleCount; i++) {
-      let circle = new PIXI.Sprite.from("../public/spiral/particle.gif");
+      let circle = new PIXI.Sprite.from("/spiral/particle.gif");
       let coordinate = coordinateFinder(i),
         size = sizeFinder(i);
       circle.position.x = coordinate.x;
@@ -211,6 +209,7 @@ const PixiComponent = () => {
 
     return () => {
       app.stop();
+      app.view.remove();
     };
   }, []);
 
