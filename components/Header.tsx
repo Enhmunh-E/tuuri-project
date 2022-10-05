@@ -13,7 +13,7 @@ export const Header = () => {
 const styles: Record<string, React.CSSProperties> = {
   headerContainer: {
     height: "60px",
-    borderBottom: "1px solid #FFC909",
+    // borderBottom: "1px solid #FFC909",
     display: "flex",
     alignItems: "center",
   },

@@ -14,28 +14,28 @@ const PixiComponent = () => {
     app = new PIXI.Application({
       width: appWidth,
       height: appHeight,
-      backgroundColor: 0xc3dbcb,
+      backgroundColor: 0xffffff,
     });
 
     document.getElementById("pixi-container").appendChild(app.view);
     app.stage.interactive = true;
 
     let textureSize = 400;
-    for (let h = 0; h < appHeight; h += textureSize) {
-      for (let w = 0; w < appHeight; w += textureSize) {
-        let background = new PIXI.Sprite.from("/spiral/canvas_texture.png");
-        background.position.y = h;
-        background.position.x = w;
-        background.width = textureSize;
-        background.height = textureSize;
-        app.stage.addChild(background);
-      }
-    }
+    // for (let h = 0; h < appHeight; h += textureSize) {
+    //   for (let w = 0; w < appHeight; w += textureSize) {
+    //     let background = new PIXI.Sprite.from("/spiral/canvas_texture.png");
+    //     background.position.y = h;
+    //     background.position.x = w;
+    //     background.width = textureSize;
+    //     background.height = textureSize;
+    //     app.stage.addChild(background);
+    //   }
+    // }
 
     let elapsed = 0.0;
     // Radius of large and small circle
-    let R = 400,
-      r = 100;
+    let R = 300,
+      r = 75;
 
     // Cordinates of the circles
     let Rx = appWidth / 2,
@@ -46,7 +46,7 @@ const PixiComponent = () => {
     let totalCircleCount = 5000,
       circlePerLoop = 100,
       maxRenderDistance = 5000,
-      maxCircleSize = 20; // not 360 degrees per loop to overlap nicely
+      maxCircleSize = 15; // not 360 degrees per loop to overlap nicely
 
     let Circles = [],
       frontIndex = totalCircleCount - 1;
