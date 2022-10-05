@@ -116,7 +116,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "24px",
     lineHeight: "36px",
     display: "flex",
-    color: "#FFFFFF",
+    color: "#000000",
     flexDirection: "column",
   },
   upperMotto: {
@@ -126,7 +126,7 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: "24px",
     lineHeight: "36px",
     textTransform: "uppercase",
-    color: "#FFFFFF",
+    color: "#000000",
   },
   rightCol: {
     display: "flex",
