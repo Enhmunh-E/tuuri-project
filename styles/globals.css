@@ -34,3 +34,6 @@ a {
     margin: 0;
   }
 }
+#pixi-container {
+  width: 100vw !important;
+}
