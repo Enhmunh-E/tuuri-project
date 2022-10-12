@@ -254,13 +254,13 @@ const PixiComponent = () => {
       for (let i = 0; i < totalCircleCount; i++) {
         let renderDistance = Math.min(maxRenderDistance, resIndex);
 
-        if (i > resIndex - renderDistance && i < resIndex) {
+        if (i >= resIndex - renderDistance && i <= resIndex) {
           if (
             !Circles[i].used &&
             dotRemoved < Math.abs(frontIndex - resIndex) / 10
           ) {
             dotRemoved++;
-            frontIndex = i + 1;
+            frontIndex = i;
             app.stage.addChild(Circles[i].circle);
             Circles[i].used = true;
           }
