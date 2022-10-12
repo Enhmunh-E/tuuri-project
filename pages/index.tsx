@@ -25,7 +25,10 @@ const Home = ({ articles }: { articles: Entry<unknown>[] }) => {
     <div className={styles.container}>
       <Header />
       {/* Here Lies the Spring and other components */}
-      <div id="pixi-container">
+      <div
+        id="pixi-container"
+        style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
+      >
         <Pixi />
       </div>
     </div>

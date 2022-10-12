@@ -107,10 +107,10 @@ const PixiComponent = () => {
       let random = Math.random() * 50,
         type = "instant",
         speed = 0.5;
-      if (random <= 7) {
+      if (random <= 20) {
         type = "delayed";
-        if (random <= 3) speed = 0.1;
-        else if (random <= 1) speed = 0.05;
+        let speedrand = Math.floor(Math.random() * 5) + 0.5;
+        speed = speedrand;
       }
       Circles.push({
         circle: circle,
@@ -176,16 +176,15 @@ const PixiComponent = () => {
     app.stage.sortableChildren = true;
 
     window.addEventListener("mousewheel", (e) => {
-      if (e.deltaY < 0) resIndex -= Math.floor(circlePerLoop / 3);
-      else resIndex += Math.floor(circlePerLoop / 3);
+      resIndex += (e.deltaY * Math.floor(Math.random() * 10)) / 10;
       resIndex = Math.max(resIndex, circlePerLoop);
       resIndex = Math.min(resIndex, totalCircleCount - 1);
     });
     window.addEventListener("pointermove", (e) => {
       let x = window.innerWidth / 2 - e.x,
         y = window.innerHeight / 2 - e.y;
-      let Rchange = 10,
-        rChange = 2.5;
+      let Rchange = 15,
+        rChange = 5;
       Rx = appWidth / 2 + x / Rchange;
       Ry = appHeight / 2 + (y / Rchange) * aspectRatio;
       rX = appWidth / 2 + x / rChange;
@@ -198,16 +197,17 @@ const PixiComponent = () => {
       for (let i = 0; i < totalCircleCount; i++) {
         let coordinate = coordinateFinder(i),
           size = sizeFinder(i),
-          delay = 10;
+          delay = 0;
         if (
           Circles[i].type == "instant" ||
-          frontIndex - i <= circlePerLoop * 5
+          frontIndex - i <= circlePerLoop * 5 ||
+          resIndex != frontIndex
         ) {
           Circles[i].circle.x = coordinate.x;
           Circles[i].circle.y = coordinate.y;
         } else {
           let speed = Circles[i].speed;
-          if (frontIndex != resIndex) speed = 20;
+          // if (resIndex != frontIndex) speed = 20;
           if (Circles[i].lastMove < elapsed - delay) {
             let dist = distFinder(
               Circles[i].circle.x,
