@@ -20,18 +20,6 @@ const PixiComponent = () => {
     document.getElementById("pixi-container").appendChild(app.view);
     app.stage.interactive = true;
 
-    let textureSize = 400;
-    // for (let h = 0; h < appHeight; h += textureSize) {
-    //   for (let w = 0; w < appHeight; w += textureSize) {
-    //     let background = new PIXI.Sprite.from("/spiral/canvas_texture.png");
-    //     background.position.y = h;
-    //     background.position.x = w;
-    //     background.width = textureSize;
-    //     background.height = textureSize;
-    //     app.stage.addChild(background);
-    //   }
-    // }
-
     let elapsed = 0.0;
     // Radius of large and small circle
     let R = 300,
@@ -49,9 +37,8 @@ const PixiComponent = () => {
       maxCircleSize = 15; // not 360 degrees per loop to overlap nicely
 
     let Circles = [],
-      frontIndex = totalCircleCount - 1;
-
-    let circlesContainer = new PIXI.Container();
+      frontIndex = totalCircleCount - 1,
+      resIndex = totalCircleCount - 1;
 
     const coordinateFinder = (index) => {
       let angle =
@@ -91,8 +78,6 @@ const PixiComponent = () => {
       return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
     };
 
-    console.log(((Math.atan(1) + Math.PI) * 180) / Math.PI);
-
     const angleFinder = (x1, x2, y1, y2) => {
       // console.log(x1, x2, y1, y2);
       // console.log(Math.atan((y2 - y1) / (x2 - x1)));
@@ -129,18 +114,72 @@ const PixiComponent = () => {
       }
       Circles.push({
         circle: circle,
-        used: false,
+        used: true,
         type: type,
         lastMove: elapsed,
         speed: speed,
       });
+      app.stage.addChild(circle);
     }
 
+    let popup = {
+      container: new PIXI.Container(),
+      sprite: new PIXI.Sprite.from("/spiral/contentTMP.png"),
+      mask: new PIXI.Graphics(),
+      border: new PIXI.Sprite.from("/spiral/border.png"),
+      borderSize: 2,
+      R: 80,
+      inUse: false,
+    };
+
+    function SpriteDataSet(
+      sprite,
+      zIndex,
+      height,
+      width,
+      x,
+      y,
+      anchorx,
+      anchory
+    ) {
+      sprite.zIndex = zIndex;
+      sprite.height = height;
+      sprite.width = width;
+      sprite.x = x;
+      sprite.y = y;
+      sprite.anchor.x = anchorx;
+      sprite.anchor.y = anchory;
+    }
+
+    SpriteDataSet(popup.sprite, 2, popup.R * 2, popup.R * 2, 0, 0, 0.5, 0.5);
+    SpriteDataSet(
+      popup.border,
+      1,
+      (popup.R + popup.borderSize) * 2,
+      (popup.R + popup.borderSize) * 2,
+      0,
+      0,
+      0.5,
+      0.5
+    );
+
+    popup.mask.beginFill(0xffffff);
+    popup.mask.drawCircle(0, 0, popup.R);
+    popup.sprite.mask = popup.mask;
+
+    popup.container.addChild(popup.mask);
+    popup.container.addChild(popup.sprite);
+    popup.container.addChild(popup.border);
+    popup.container.sortableChildren = true;
+    popup.container.zIndex = totalCircleCount + 1;
+
+    app.stage.sortableChildren = true;
+
     window.addEventListener("mousewheel", (e) => {
-      if (e.deltaY < 0) frontIndex -= Math.floor(circlePerLoop / 3);
-      else frontIndex += Math.floor(circlePerLoop / 3);
-      frontIndex = Math.max(frontIndex, circlePerLoop);
-      frontIndex = Math.min(frontIndex, totalCircleCount - 1);
+      if (e.deltaY < 0) resIndex -= Math.floor(circlePerLoop / 3);
+      else resIndex += Math.floor(circlePerLoop / 3);
+      resIndex = Math.max(resIndex, circlePerLoop);
+      resIndex = Math.min(resIndex, totalCircleCount - 1);
     });
     window.addEventListener("pointermove", (e) => {
       let x = window.innerWidth / 2 - e.x,
@@ -155,19 +194,11 @@ const PixiComponent = () => {
 
     app.ticker.add((delta) => {
       elapsed += delta;
+      let dotRemoved = 0;
       for (let i = 0; i < totalCircleCount; i++) {
-        let renderDistance = Math.min(maxRenderDistance, frontIndex);
-
-        if (i < frontIndex - renderDistance || i > frontIndex) {
-          if (Circles[i].used) app.stage.removeChild(Circles[i].circle);
-          Circles[i].used = false;
-          continue;
-        }
-
         let coordinate = coordinateFinder(i),
           size = sizeFinder(i),
           delay = 10;
-
         if (
           Circles[i].type == "instant" ||
           frontIndex - i <= circlePerLoop * 5
@@ -175,6 +206,8 @@ const PixiComponent = () => {
           Circles[i].circle.x = coordinate.x;
           Circles[i].circle.y = coordinate.y;
         } else {
+          let speed = Circles[i].speed;
+          if (frontIndex != resIndex) speed = 20;
           if (Circles[i].lastMove < elapsed - delay) {
             let dist = distFinder(
               Circles[i].circle.x,
@@ -189,20 +222,66 @@ const PixiComponent = () => {
               coordinate.y
             );
 
-            if (dist <= Circles[i].speed * delta) {
+            if (dist <= speed * delta) {
               Circles[i].circle.x = coordinate.x;
               Circles[i].circle.y = coordinate.y;
               Circles[i].lastMove = elapsed;
             } else {
-              Circles[i].circle.x += Math.cos(angle) * Circles[i].speed * delta;
-              Circles[i].circle.y += Math.sin(angle) * Circles[i].speed * delta;
+              Circles[i].circle.x += Math.cos(angle) * speed * delta;
+              Circles[i].circle.y += Math.sin(angle) * speed * delta;
             }
           }
         }
         Circles[i].circle.height = size;
         Circles[i].circle.width = size;
-        if (!Circles[i].used) app.stage.addChild(Circles[i].circle);
-        Circles[i].used = true;
+      }
+      for (let i = totalCircleCount - 1; i >= 0; i--) {
+        let renderDistance = Math.min(maxRenderDistance, resIndex);
+
+        if (i < resIndex - renderDistance || i > resIndex) {
+          if (
+            Circles[i].used &&
+            dotRemoved < Math.abs(frontIndex - resIndex) / 10
+          ) {
+            dotRemoved++;
+            frontIndex = i - 1;
+            app.stage.removeChild(Circles[i].circle);
+            Circles[i].used = false;
+          }
+        }
+      }
+
+      for (let i = 0; i < totalCircleCount; i++) {
+        let renderDistance = Math.min(maxRenderDistance, resIndex);
+
+        if (i > resIndex - renderDistance && i < resIndex) {
+          if (
+            !Circles[i].used &&
+            dotRemoved < Math.abs(frontIndex - resIndex) / 10
+          ) {
+            dotRemoved++;
+            frontIndex = i + 1;
+            app.stage.addChild(Circles[i].circle);
+            Circles[i].used = true;
+          }
+        }
+      }
+      if (frontIndex == resIndex) {
+        popup.sprite.x = coordinateFinder(frontIndex).x;
+        popup.sprite.y = coordinateFinder(frontIndex).y;
+        popup.border.x = coordinateFinder(frontIndex).x;
+        popup.border.y = coordinateFinder(frontIndex).y;
+        popup.mask.x = coordinateFinder(frontIndex).x;
+        popup.mask.y = coordinateFinder(frontIndex).y;
+        if (!popup.inUse) {
+          app.stage.addChild(popup.container);
+          popup.inUse = true;
+        }
+      } else {
+        if (popup.inUse) {
+          app.stage.removeChild(popup.container);
+          popup.inUse = false;
+        }
       }
     });
     app.start();
