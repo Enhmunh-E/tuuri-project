@@ -5,4 +5,9 @@
   background-size: 300px 300px;
   background-blend-mode: color-burn;
   height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
 }
