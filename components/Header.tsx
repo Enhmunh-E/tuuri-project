@@ -6,6 +6,7 @@ export const Header = () => {
     <header style={styles.headerContainer}>
       <div className="middleContainer">
         <Image src={TuuriLogo} />
+        <div>Цагийн эрхи</div>
       </div>
     </header>
   );
@@ -13,6 +14,7 @@ export const Header = () => {
 const styles: Record<string, React.CSSProperties> = {
   headerContainer: {
     height: "60px",
+    width: "100vw",
     // borderBottom: "1px solid #FFC909",
     display: "flex",
     alignItems: "center",

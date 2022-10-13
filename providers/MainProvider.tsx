@@ -21,7 +21,7 @@ export const MainProvider: FC<MainProviderProps> = ({ children }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 100);
     return () => clearTimeout(timer);
   }, []);
   return (
