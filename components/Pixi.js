@@ -34,7 +34,7 @@ const PixiComponent = () => {
     let totalCircleCount = 5000,
       circlePerLoop = 100,
       maxRenderDistance = 5000,
-      maxCircleSize = 15; // not 360 degrees per loop to overlap nicely
+      maxCircleSize = 15;
 
     let Circles = [],
       frontIndex = totalCircleCount - 1,
@@ -47,7 +47,6 @@ const PixiComponent = () => {
       let radius =
         r +
         ((R - r) / renderDistance) * (index - (frontIndex - renderDistance));
-      // if (index == 0) console.log(frontIndex, radius);
       let x =
         radius * Math.cos((angle * Math.PI) / 180) +
         rX +
@@ -79,8 +78,6 @@ const PixiComponent = () => {
     };
 
     const angleFinder = (x1, x2, y1, y2) => {
-      // console.log(x1, x2, y1, y2);
-      // console.log(Math.atan((y2 - y1) / (x2 - x1)));
       if (x2 == x1) {
         if (y1 > y2) return (270 * Math.PI) / 180;
         return (90 * Math.PI) / 180;
@@ -92,7 +89,6 @@ const PixiComponent = () => {
       if (x2 > x1) return Math.atan((y2 - y1) / (x2 - x1));
       return Math.atan((y2 - y1) / (x2 - x1)) + Math.PI;
     };
-    // Maybe add to app onLoad?
     for (let i = 0; i < totalCircleCount; i++) {
       let circle = new PIXI.Sprite.from("/spiral/particle.gif");
       let coordinate = coordinateFinder(i),
@@ -207,7 +203,6 @@ const PixiComponent = () => {
           Circles[i].circle.y = coordinate.y;
         } else {
           let speed = Circles[i].speed;
-          // if (resIndex != frontIndex) speed = 20;
           if (Circles[i].lastMove < elapsed - delay) {
             let dist = distFinder(
               Circles[i].circle.x,
