@@ -2,12 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import * as PIXI from "pixi.js";
 import "pixi-spine";
 import { useMainProvider } from "../providers";
+import { useScrollContext } from "../providers";
 
 const PixiComponent = () => {
   let gameCanvas = <></>;
   let app = PIXI.Application;
   const { setPopUpLocation, setPopUpInUse, popUpLocation } = useMainProvider();
   // console.log(popUpLocation);
+  const { scroll, setScroll } = useScrollContext();
+
+  const [popupLocation, setPopupLocation] = useState(null);
+  const [popupInUse, setPopupInUse] = useState(false);
+
   useEffect(() => {
     let appWidth = window.innerWidth,
       appHeight = window.innerHeight,

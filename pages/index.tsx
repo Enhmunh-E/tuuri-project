@@ -10,19 +10,20 @@ import { Article } from "../components/Article";
 import HomeLoading from "../components/HomeLoading";
 import { fetchEntries } from "../util/contentfulArticles";
 import { ArticleType } from "../components/types";
+import { ScrollProvider } from "../providers";
 
 const Pixi = dynamic(import("../components/Pixi"), { ssr: false });
 
 const data = [
-  { title: "1" },
-  { title: "2" },
-  { title: "3" },
-  { title: "4" },
-  { title: "5" },
-  { title: "6" },
-  { title: "7" },
-  { title: "8" },
-  { title: "9" },
+  { title: "Алтан улсыг бүхэлд эзэлсэн нь", year: "1215\nОН" },
+  { title: "Тангудын бослого", year: "1215\nОН" },
+  { title: "Их Монголын гадаад бодлогын өргөжилт", year: "1215\nОН" },
+  { title: "Хорезмын эзэнт гүрнийг довтолсон", year: "1215\nОН" },
+  { title: "Мухаммед шахын орголт", year: "1215\nОН" },
+  { title: "Калка голын байлдаан", year: "1215\nОН" },
+  { title: "Сүн улсыг эзлэх аян дайн", year: "1215\nОН" },
+  { title: "8", year: "1215\nОН" },
+  { title: "9", year: "1215\nОН" },
 ];
 
 // export const getStaticProps = async () => {
@@ -47,17 +48,17 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
   if (loading) return <HomeLoading />;
   return (
     <div className={styles.container}>
-      <Header />
-      {/* Here Lies the Spring and other components */}
-      <div className="body-container">
-        <div
-          id="pixi-container"
-          style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
-        >
-          <Article />
-          <Pixi />
-        </div>
-        <Carousel />
+      <div className="rel">
+        <Header />
+        <ScrollProvider>
+          <div
+            id="pixi-container"
+            style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
+          >
+            <Pixi />
+          </div>
+          <Carousel data={data} />
+        </ScrollProvider>
       </div>
     </div>
   );

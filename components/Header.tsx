@@ -17,7 +17,7 @@ export const Header = () => {
 const styles: Record<string, React.CSSProperties> = {
   headerContainer: {
     height: "60px",
-    width: "100vw",
+    width: "100%",
     // borderBottom: "1px solid #FFC909",
     display: "flex",
     alignItems: "center",

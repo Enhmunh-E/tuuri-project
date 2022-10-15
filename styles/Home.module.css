@@ -5,7 +5,8 @@
   background-size: 300px 300px;
   background-blend-mode: color-burn;
   height: 100vh;
-  position: relative;
+  /* position: relative; */
+  padding: 0 10vw 0 10vw;
   display: flex;
   align-items: center;
   /* justify-content: center; */
