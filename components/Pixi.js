@@ -22,8 +22,8 @@ const PixiComponent = () => {
 
     let elapsed = 0.0;
     // Radius of large and small circle
-    let R = 300,
-      r = 75;
+    let R = 250,
+      r = 50;
 
     // Cordinates of the circles
     let Rx = appWidth / 2,
@@ -34,7 +34,7 @@ const PixiComponent = () => {
     let totalCircleCount = 5000,
       circlePerLoop = 100,
       maxRenderDistance = 5000,
-      maxCircleSize = 15; // not 360 degrees per loop to overlap nicely
+      maxCircleSize = 15;
 
     let Circles = [],
       frontIndex = totalCircleCount - 1,
@@ -47,7 +47,6 @@ const PixiComponent = () => {
       let radius =
         r +
         ((R - r) / renderDistance) * (index - (frontIndex - renderDistance));
-      // if (index == 0) console.log(frontIndex, radius);
       let x =
         radius * Math.cos((angle * Math.PI) / 180) +
         rX +
@@ -79,8 +78,6 @@ const PixiComponent = () => {
     };
 
     const angleFinder = (x1, x2, y1, y2) => {
-      // console.log(x1, x2, y1, y2);
-      // console.log(Math.atan((y2 - y1) / (x2 - x1)));
       if (x2 == x1) {
         if (y1 > y2) return (270 * Math.PI) / 180;
         return (90 * Math.PI) / 180;
@@ -92,7 +89,6 @@ const PixiComponent = () => {
       if (x2 > x1) return Math.atan((y2 - y1) / (x2 - x1));
       return Math.atan((y2 - y1) / (x2 - x1)) + Math.PI;
     };
-    // Maybe add to app onLoad?
     for (let i = 0; i < totalCircleCount; i++) {
       let circle = new PIXI.Sprite.from("/spiral/particle.gif");
       let coordinate = coordinateFinder(i),
@@ -104,6 +100,9 @@ const PixiComponent = () => {
       circle.width = size;
 
       circle.zIndex = i;
+      circle.anchor.x = 0.5;
+      circle.anchor.y = 0.5;
+
       let random = Math.random() * 50,
         type = "instant",
         speed = 0.5;
@@ -128,7 +127,7 @@ const PixiComponent = () => {
       mask: new PIXI.Graphics(),
       border: new PIXI.Sprite.from("/spiral/border.png"),
       borderSize: 2,
-      R: 80,
+      R: 100,
       inUse: false,
     };
 
@@ -207,7 +206,6 @@ const PixiComponent = () => {
           Circles[i].circle.y = coordinate.y;
         } else {
           let speed = Circles[i].speed;
-          // if (resIndex != frontIndex) speed = 20;
           if (Circles[i].lastMove < elapsed - delay) {
             let dist = distFinder(
               Circles[i].circle.x,
@@ -274,13 +272,46 @@ const PixiComponent = () => {
         popup.mask.x = coordinateFinder(frontIndex).x;
         popup.mask.y = coordinateFinder(frontIndex).y;
         if (!popup.inUse) {
-          app.stage.addChild(popup.container);
-          popup.inUse = true;
-        }
+          if (Circles[frontIndex].circle.height == popup.R * 2) {
+            setPopupInUse(true);
+            popup.inUse = true;
+          } else {
+            Circles[frontIndex].circle.height += 5;
+            Circles[frontIndex].circle.width += 5;
+
+            Circles[frontIndex].circle.height = Math.min(
+              Circles[frontIndex].circle.height,
+              popup.R * 2
+            );
+            Circles[frontIndex].circle.width = Math.min(
+              Circles[frontIndex].circle.width,
+              popup.R * 2
+            );
+            circleSizeCorrect = false;
+          }
+        } else if (popup.location != { ...coordinateFinder(frontIndex) })
+          setPopupLocation({ ...coordinateFinder(frontIndex) });
       } else {
-        if (popup.inUse) {
-          app.stage.removeChild(popup.container);
-          popup.inUse = false;
+        if (popup.inUse || !circleSizeCorrect) {
+          let psize = sizeFinder(frontIndex);
+          if (Circles[frontIndex].circle.height == psize) {
+            setPopupLocation(null);
+            setPopupInUse(false);
+            popup.inUse = false;
+            circleSizeCorrect = true;
+          } else {
+            Circles[frontIndex].circle.height -= 5;
+            Circles[frontIndex].circle.width -= 5;
+
+            Circles[frontIndex].circle.height = Math.max(
+              Circles[frontIndex].circle.height,
+              psize
+            );
+            Circles[frontIndex].circle.width = Math.max(
+              Circles[frontIndex].circle.width,
+              psize
+            );
+          }
         }
       }
     });
