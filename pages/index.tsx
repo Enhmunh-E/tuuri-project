@@ -56,6 +56,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             id="pixi-container"
             style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
           >
+            <Article />
             <Pixi />
           </div>
           {/* <Carousel data={data} /> */}
