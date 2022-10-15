@@ -22,8 +22,8 @@ const PixiComponent = () => {
 
     let elapsed = 0.0;
     // Radius of large and small circle
-    let R = 300,
-      r = 75;
+    let R = 250,
+      r = 50;
 
     // Cordinates of the circles
     let Rx = appWidth / 2,
@@ -100,6 +100,9 @@ const PixiComponent = () => {
       circle.width = size;
 
       circle.zIndex = i;
+      circle.anchor.x = 0.5;
+      circle.anchor.y = 0.5;
+
       let random = Math.random() * 50,
         type = "instant",
         speed = 0.5;
@@ -124,7 +127,7 @@ const PixiComponent = () => {
       mask: new PIXI.Graphics(),
       border: new PIXI.Sprite.from("/spiral/border.png"),
       borderSize: 2,
-      R: 80,
+      R: 100,
       inUse: false,
     };
 
@@ -269,13 +272,46 @@ const PixiComponent = () => {
         popup.mask.x = coordinateFinder(frontIndex).x;
         popup.mask.y = coordinateFinder(frontIndex).y;
         if (!popup.inUse) {
-          app.stage.addChild(popup.container);
-          popup.inUse = true;
-        }
+          if (Circles[frontIndex].circle.height == popup.R * 2) {
+            setPopupInUse(true);
+            popup.inUse = true;
+          } else {
+            Circles[frontIndex].circle.height += 5;
+            Circles[frontIndex].circle.width += 5;
+
+            Circles[frontIndex].circle.height = Math.min(
+              Circles[frontIndex].circle.height,
+              popup.R * 2
+            );
+            Circles[frontIndex].circle.width = Math.min(
+              Circles[frontIndex].circle.width,
+              popup.R * 2
+            );
+            circleSizeCorrect = false;
+          }
+        } else if (popup.location != { ...coordinateFinder(frontIndex) })
+          setPopupLocation({ ...coordinateFinder(frontIndex) });
       } else {
-        if (popup.inUse) {
-          app.stage.removeChild(popup.container);
-          popup.inUse = false;
+        if (popup.inUse || !circleSizeCorrect) {
+          let psize = sizeFinder(frontIndex);
+          if (Circles[frontIndex].circle.height == psize) {
+            setPopupLocation(null);
+            setPopupInUse(false);
+            popup.inUse = false;
+            circleSizeCorrect = true;
+          } else {
+            Circles[frontIndex].circle.height -= 5;
+            Circles[frontIndex].circle.width -= 5;
+
+            Circles[frontIndex].circle.height = Math.max(
+              Circles[frontIndex].circle.height,
+              psize
+            );
+            Circles[frontIndex].circle.width = Math.max(
+              Circles[frontIndex].circle.width,
+              psize
+            );
+          }
         }
       }
     });

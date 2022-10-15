@@ -43,7 +43,7 @@ const Home = ({ articles }: { articles: Entry<unknown>[] }) => {
           id="pixi-container"
           style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
         >
-          {/* <Pixi /> */}
+          <Pixi />
         </div>
         <Carousel data={data} />
       </div>
