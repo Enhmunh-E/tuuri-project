@@ -24,7 +24,7 @@ const List = ({ data }: any) => {
       {data.map((d: any, index: number) => {
         const { title, year } = d;
         return (
-          <div className="list-element">
+          <div className="list-element" key={title}>
             <div className="year">{year}</div>
             <div className="line"></div>
             <div className="title">{title}</div>
