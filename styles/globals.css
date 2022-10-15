@@ -70,6 +70,13 @@ a {
   border: 1px solid black;
 }
 
+.sidebar-helement {
+  display: flex !important;
+  height: 70px;
+  margin: 10px 0 10px;
+  border: 1px solid black;
+}
+
 .sidebar-element > .title {
   width: 70%;
 }
@@ -97,7 +104,9 @@ a {
   height: 560px;
   width: 300px;
   position: absolute;
-  overflow: scroll;
+  overflow: auto;
+  cursor: grab;
+  overflow-x: hidden;
   top: 50%;
   left: 0;
   transform: translate(0, -50%);
@@ -111,7 +120,7 @@ a {
   margin-bottom: 10px;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   position: relative;
 }
 
@@ -122,4 +131,21 @@ a {
 .list-element > .year {
   width: 20%;
   margin-right: 10%;
+}
+
+/* Designing for scroll-bar */
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 5px;
 }

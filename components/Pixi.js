@@ -13,6 +13,7 @@ const PixiComponent = () => {
 
   const [popupLocation, setPopupLocation] = useState(null);
   const [popupInUse, setPopupInUse] = useState(false);
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     let appWidth = window.innerWidth,
@@ -138,14 +139,11 @@ const PixiComponent = () => {
       borderSize: 2,
       R: 80,
       inUse: false,
-<<<<<<< HEAD
       location: {
         x: 0,
         y: 0,
       },
-=======
       delay: 30,
->>>>>>> 9d52221 (Feature side-bar version1 & common onwheel event)
     };
 
     function SpriteDataSet(
@@ -197,6 +195,7 @@ const PixiComponent = () => {
       resIndex = Math.min(resIndex, totalCircleCount - 1);
       setScroll(e.deltaY);
     });
+
     window.addEventListener("pointermove", (e) => {
       let x = window.innerWidth / 2 - e.x,
         y = window.innerHeight / 2 - e.y;
