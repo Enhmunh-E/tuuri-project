@@ -13,6 +13,7 @@ import HomeLoading from "../components/HomeLoading";
 import { ArticleType } from "../components/types";
 
 interface MainProviderInterface {
+<<<<<<< HEAD
   popUpLocation: PopUpLocationType | null;
   setPopUpLocation: Dispatch<SetStateAction<PopUpLocationType | null>>;
   popUpInUse: boolean;
@@ -27,6 +28,11 @@ type PopUpLocationType = {
   x: number;
   y: number;
 };
+=======
+  currentDataIndex: any;
+  setCurrentDataIndex: any;
+}
+>>>>>>> 9d52221 (Feature side-bar version1 & common onwheel event)
 
 const MainContext = createContext<MainProviderInterface>(
   {} as MainProviderInterface
@@ -36,6 +42,7 @@ interface MainProviderProps {
 }
 export const MainProvider: FC<MainProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
+<<<<<<< HEAD
   const [allArticles, setAllArticles] = useState<ArticleType[]>([]);
   const [popUpLocation, setPopUpLocation] = useState<PopUpLocationType | null>({
     x: 300,
@@ -62,6 +69,18 @@ export const MainProvider: FC<MainProviderProps> = ({ children }) => {
       }}
     >
       {children}
+=======
+  const [currentDataIndex, setCurrentDataIndex] = useState<number>();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+  return (
+    <MainContext.Provider value={{ currentDataIndex, setCurrentDataIndex }}>
+      {loading ? <HomeLoading /> : children}
+>>>>>>> 9d52221 (Feature side-bar version1 & common onwheel event)
     </MainContext.Provider>
   );
 };

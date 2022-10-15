@@ -21,13 +21,6 @@ interface ScrollProviderProps {
 export const ScrollProvider: FC<ScrollProviderProps> = ({ children }) => {
   const [scroll, setScroll] = useState<number>(0);
 
-  useEffect(() => {
-    window.addEventListener("mousewheel", (e: Event) => {
-      const ev: WheelEvent = e as unknown as WheelEvent;
-      setScroll(scroll + ev.deltaY);
-    });
-  }, []);
-
   return (
     <ScrollContext.Provider value={{ scroll, setScroll }}>
       {children}

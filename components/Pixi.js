@@ -138,10 +138,14 @@ const PixiComponent = () => {
       borderSize: 2,
       R: 80,
       inUse: false,
+<<<<<<< HEAD
       location: {
         x: 0,
         y: 0,
       },
+=======
+      delay: 30,
+>>>>>>> 9d52221 (Feature side-bar version1 & common onwheel event)
     };
 
     function SpriteDataSet(
@@ -191,6 +195,7 @@ const PixiComponent = () => {
       resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
       resIndex = Math.max(resIndex, circlePerLoop);
       resIndex = Math.min(resIndex, totalCircleCount - 1);
+      setScroll(e.deltaY);
     });
     window.addEventListener("pointermove", (e) => {
       let x = window.innerWidth / 2 - e.x,
@@ -295,8 +300,8 @@ const PixiComponent = () => {
             setPopUpInUse(true);
             popup.inUse = true;
           } else {
-            Circles[frontIndex].circle.height += 5;
-            Circles[frontIndex].circle.width += 5;
+            Circles[frontIndex].circle.height += popup.delay;
+            Circles[frontIndex].circle.width += popup.delay;
 
             Circles[frontIndex].circle.height = Math.min(
               Circles[frontIndex].circle.height,
@@ -318,7 +323,9 @@ const PixiComponent = () => {
       } else {
         if (popup.inUse || !circleSizeCorrect) {
           let psize = sizeFinder(frontIndex);
-          if (Math.abs(Circles[frontIndex].circle.height - psize) < 5) {
+          if (
+            Math.abs(Circles[frontIndex].circle.height - psize) < popup.delay
+          ) {
             Circles[frontIndex].circle.height = psize;
             Circles[frontIndex].circle.width = psize;
             setPopUpLocation(null);
@@ -326,8 +333,8 @@ const PixiComponent = () => {
             popup.inUse = false;
             circleSizeCorrect = true;
           } else {
-            Circles[frontIndex].circle.height -= 5;
-            Circles[frontIndex].circle.width -= 5;
+            Circles[frontIndex].circle.height -= popup.delay;
+            Circles[frontIndex].circle.width -= popup.delay;
           }
         }
       }
