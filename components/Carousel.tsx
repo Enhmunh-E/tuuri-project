@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useScrollContext } from "../providers";
+import { useMainProvider, useScrollContext } from "../providers";
 
 const Carousel = ({ data }: any) => {
   const { scroll, setScroll } = useScrollContext();
+  const { currentDataIndex, setCurrentDataIndex } = useMainProvider();
 
   const settings: Settings = {
     swipeToSlide: true,
@@ -18,6 +19,9 @@ const Carousel = ({ data }: any) => {
     slidesToScroll: 1,
     vertical: true,
     verticalSwiping: true,
+    afterChange: (currentSlide) => {
+      setCurrentDataIndex(currentSlide);
+    },
   };
   const [myslider, setSlider] = useState<Slider>();
   const slide = (y: number) => {
@@ -31,10 +35,15 @@ const Carousel = ({ data }: any) => {
       <div className="relative">
         <div className="line"></div>
         <Slider ref={(slider: Slider) => setSlider(slider)} {...settings}>
-          {data.map((d: any) => {
+          {data.map((d: any, index: number) => {
             const { title, year } = d;
-            return (
+            return index !== currentDataIndex + 3 ? (
               <div className="sidebar-element">
+                <div className="year">{year}</div>
+                <div className="title">{title}</div>
+              </div>
+            ) : (
+              <div className="sidebar-helement">
                 <div className="year">{year}</div>
                 <div className="title">{title}</div>
               </div>
