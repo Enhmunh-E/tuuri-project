@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as PIXI from "pixi.js";
 import "pixi-spine";
 
 const PixiComponent = () => {
   let gameCanvas = <></>;
   let app = PIXI.Application;
+
+  const [popupLocation, setPopupLocation] = useState(null);
+  const [popupInUse, setPopupInUse] = useState(false);
 
   useEffect(() => {
     let appWidth = window.innerWidth,
@@ -38,7 +41,8 @@ const PixiComponent = () => {
 
     let Circles = [],
       frontIndex = totalCircleCount - 1,
-      resIndex = totalCircleCount - 1;
+      resIndex = totalCircleCount - 1,
+      circleSizeCorrect = true;
 
     const coordinateFinder = (index) => {
       let angle =
@@ -175,7 +179,7 @@ const PixiComponent = () => {
     app.stage.sortableChildren = true;
 
     window.addEventListener("mousewheel", (e) => {
-      resIndex += (e.deltaY * Math.floor(Math.random() * 10)) / 10;
+      resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
       resIndex = Math.max(resIndex, circlePerLoop);
       resIndex = Math.min(resIndex, totalCircleCount - 1);
     });
@@ -230,8 +234,10 @@ const PixiComponent = () => {
             }
           }
         }
-        Circles[i].circle.height = size;
-        Circles[i].circle.width = size;
+        if (circleSizeCorrect) {
+          Circles[i].circle.height = size;
+          Circles[i].circle.width = size;
+        }
       }
       for (let i = totalCircleCount - 1; i >= 0; i--) {
         let renderDistance = Math.min(maxRenderDistance, resIndex);
@@ -239,7 +245,8 @@ const PixiComponent = () => {
         if (i < resIndex - renderDistance || i > resIndex) {
           if (
             Circles[i].used &&
-            dotRemoved < Math.abs(frontIndex - resIndex) / 10
+            dotRemoved < Math.abs(frontIndex - resIndex) / 10 &&
+            circleSizeCorrect
           ) {
             dotRemoved++;
             frontIndex = i - 1;
@@ -255,7 +262,8 @@ const PixiComponent = () => {
         if (i >= resIndex - renderDistance && i <= resIndex) {
           if (
             !Circles[i].used &&
-            dotRemoved < Math.abs(frontIndex - resIndex) / 10
+            dotRemoved < Math.abs(frontIndex - resIndex) / 10 &&
+            circleSizeCorrect
           ) {
             dotRemoved++;
             frontIndex = i;
@@ -264,6 +272,7 @@ const PixiComponent = () => {
           }
         }
       }
+
       if (frontIndex == resIndex) {
         popup.sprite.x = coordinateFinder(frontIndex).x;
         popup.sprite.y = coordinateFinder(frontIndex).y;
@@ -294,7 +303,9 @@ const PixiComponent = () => {
       } else {
         if (popup.inUse || !circleSizeCorrect) {
           let psize = sizeFinder(frontIndex);
-          if (Circles[frontIndex].circle.height == psize) {
+          if (Math.abs(Circles[frontIndex].circle.height - psize) < 5) {
+            Circles[frontIndex].circle.height = psize;
+            Circles[frontIndex].circle.width = psize;
             setPopupLocation(null);
             setPopupInUse(false);
             popup.inUse = false;
@@ -302,15 +313,6 @@ const PixiComponent = () => {
           } else {
             Circles[frontIndex].circle.height -= 5;
             Circles[frontIndex].circle.width -= 5;
-
-            Circles[frontIndex].circle.height = Math.max(
-              Circles[frontIndex].circle.height,
-              psize
-            );
-            Circles[frontIndex].circle.width = Math.max(
-              Circles[frontIndex].circle.width,
-              psize
-            );
           }
         }
       }
