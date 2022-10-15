@@ -27,7 +27,6 @@ const data = [
   { title: "9", year: "1215\nОН" },
 ];
 
-<<<<<<< HEAD
 // export const getStaticProps = async () => {
 //   const client = createClient({
 //     space: process.env.CONTENTFUL_SPACE_ID as string,
@@ -48,23 +47,6 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
     setLoading(false);
   }, [articles, setAllArticles, setLoading]);
   if (loading) return <HomeLoading />;
-=======
-export const getStaticProps = async () => {
-  const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID as string,
-    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN as string,
-  });
-  const res = await client.getEntries({ content_type: "article" });
-  return {
-    props: {
-      articles: res.items.map((el) => el.fields),
-    },
-  };
-};
-
-const Home = ({ articles }: { articles: Entry<unknown>[] }) => {
-  console.log("articles: ", articles);
->>>>>>> 9d52221 (Feature side-bar version1 & common onwheel event)
   return (
     <div className={styles.container}>
       <div className="rel">
