@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import { Header } from "./Header";
+// @ts-ignore
 import Parallax from "parallax-js";
 import Styles from "../styles/Home.module.css";
 import Soldier from "../public/assets/soldier.png";
@@ -105,7 +106,7 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flex: 1,
     flexDirection: "row",
-    height: "calc(100vh - 60px)",
+    height: "calc(100vh)",
     paddingTop: "40px",
     overflow: "hidden",
   },

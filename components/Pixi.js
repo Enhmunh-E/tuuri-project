@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import * as PIXI from "pixi.js";
 import "pixi-spine";
+import { useMainProvider } from "../providers";
 
 const PixiComponent = () => {
   let gameCanvas = <></>;
   let app = PIXI.Application;
-
-  const [popupLocation, setPopupLocation] = useState(null);
-  const [popupInUse, setPopupInUse] = useState(false);
-
+  const { setPopUpLocation, setPopUpInUse, popUpLocation } = useMainProvider();
+  // console.log(popUpLocation);
   useEffect(() => {
     let appWidth = window.innerWidth,
-      appHeight = window.innerHeight - 60,
+      appHeight = window.innerHeight,
       aspectRatio = appWidth / appHeight;
 
     app = new PIXI.Application({
@@ -131,8 +130,12 @@ const PixiComponent = () => {
       mask: new PIXI.Graphics(),
       border: new PIXI.Sprite.from("/spiral/border.png"),
       borderSize: 2,
-      R: 100,
+      R: 80,
       inUse: false,
+      location: {
+        x: 0,
+        y: 0,
+      },
     };
 
     function SpriteDataSet(
@@ -272,17 +275,18 @@ const PixiComponent = () => {
           }
         }
       }
+      const newLocation = coordinateFinder(frontIndex);
 
       if (frontIndex == resIndex) {
-        popup.sprite.x = coordinateFinder(frontIndex).x;
-        popup.sprite.y = coordinateFinder(frontIndex).y;
-        popup.border.x = coordinateFinder(frontIndex).x;
-        popup.border.y = coordinateFinder(frontIndex).y;
-        popup.mask.x = coordinateFinder(frontIndex).x;
-        popup.mask.y = coordinateFinder(frontIndex).y;
+        popup.sprite.x = newLocation.x;
+        popup.sprite.y = newLocation.y;
+        popup.border.x = newLocation.x;
+        popup.border.y = newLocation.y;
+        popup.mask.x = newLocation.x;
+        popup.mask.y = newLocation.y;
         if (!popup.inUse) {
           if (Circles[frontIndex].circle.height == popup.R * 2) {
-            setPopupInUse(true);
+            setPopUpInUse(true);
             popup.inUse = true;
           } else {
             Circles[frontIndex].circle.height += 5;
@@ -298,16 +302,21 @@ const PixiComponent = () => {
             );
             circleSizeCorrect = false;
           }
-        } else if (popup.location != { ...coordinateFinder(frontIndex) })
-          setPopupLocation({ ...coordinateFinder(frontIndex) });
+        } else if (
+          popup.location.x != newLocation.x ||
+          popup.location.y != newLocation.y
+        ) {
+          popup.location = newLocation;
+          setPopUpLocation({ ...newLocation });
+        }
       } else {
         if (popup.inUse || !circleSizeCorrect) {
           let psize = sizeFinder(frontIndex);
           if (Math.abs(Circles[frontIndex].circle.height - psize) < 5) {
             Circles[frontIndex].circle.height = psize;
             Circles[frontIndex].circle.width = psize;
-            setPopupLocation(null);
-            setPopupInUse(false);
+            setPopUpLocation(null);
+            setPopUpInUse(false);
             popup.inUse = false;
             circleSizeCorrect = true;
           } else {

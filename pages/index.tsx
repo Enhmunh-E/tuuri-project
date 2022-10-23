@@ -4,6 +4,12 @@ import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
 import { createClient, Entry } from "contentful";
 import Carousel from "../components/Carousel";
+import { useMainProvider } from "../providers";
+import { useEffect, useRef, useState } from "react";
+import { Article } from "../components/Article";
+import HomeLoading from "../components/HomeLoading";
+import { fetchEntries } from "../util/contentfulArticles";
+import { ArticleType } from "../components/types";
 
 const Pixi = dynamic(import("../components/Pixi"), { ssr: false });
 
@@ -19,21 +25,26 @@ const data = [
   { title: "9" },
 ];
 
-export const getStaticProps = async () => {
-  const client = createClient({
-    space: process.env.CONTENTFUL_SPACE_ID as string,
-    accessToken: process.env.CONTENTFUL_ACCESS_TOKEN as string,
-  });
-  const res = await client.getEntries({ content_type: "article" });
-  return {
-    props: {
-      articles: res.items,
-    },
-  };
-};
+// export const getStaticProps = async () => {
+//   const client = createClient({
+//     space: process.env.CONTENTFUL_SPACE_ID as string,
+//     accessToken: process.env.CONTENTFUL_ACCESS_TOKEN as string,
+//   });
+//   const res = await client.getEntries({ content_type: "article" });
+//   return {
+//     props: {
+//       articles: res.items,
+//     },
+//   };
+// };
 
-const Home = ({ articles }: { articles: Entry<unknown>[] }) => {
-  console.log(articles);
+const Home = ({ articles }: { articles: ArticleType[] }) => {
+  const { setAllArticles, setLoading, loading } = useMainProvider();
+  useEffect(() => {
+    setAllArticles(articles);
+    setLoading(false);
+  }, [articles, setAllArticles, setLoading]);
+  if (loading) return <HomeLoading />;
   return (
     <div className={styles.container}>
       <Header />
@@ -43,9 +54,10 @@ const Home = ({ articles }: { articles: Entry<unknown>[] }) => {
           id="pixi-container"
           style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
         >
+          <Article />
           <Pixi />
         </div>
-        <Carousel data={data} />
+        <Carousel />
       </div>
     </div>
   );
@@ -56,10 +68,21 @@ const homeStyles: Record<string, React.CSSProperties> = {
     display: "flex",
     flex: 1,
     flexDirection: "row",
-    height: "calc(100vh - 60px)",
+    height: "calc(100vh)",
     paddingTop: "40px",
     overflow: "hidden",
   },
 };
+export async function getStaticProps() {
+  const res = await fetchEntries();
+  const articles = await res?.map((p) => {
+    return p.fields;
+  });
+  return {
+    props: {
+      articles,
+    },
+  };
+}
 
 export default Home;

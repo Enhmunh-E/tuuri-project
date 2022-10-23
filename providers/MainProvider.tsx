@@ -1,3 +1,4 @@
+import { Entry } from "contentful";
 import {
   createContext,
   useContext,
@@ -5,10 +6,27 @@ import {
   ReactNode,
   FC,
   useEffect,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import HomeLoading from "../components/HomeLoading";
+import { ArticleType } from "../components/types";
 
-interface MainProviderInterface {}
+interface MainProviderInterface {
+  popUpLocation: PopUpLocationType | null;
+  setPopUpLocation: Dispatch<SetStateAction<PopUpLocationType | null>>;
+  popUpInUse: boolean;
+  setPopUpInUse: Dispatch<SetStateAction<boolean>>;
+  allArticles: ArticleType[];
+  setAllArticles: Dispatch<SetStateAction<ArticleType[]>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
+}
+
+type PopUpLocationType = {
+  x: number;
+  y: number;
+};
 
 const MainContext = createContext<MainProviderInterface>(
   {} as MainProviderInterface
@@ -18,15 +36,32 @@ interface MainProviderProps {
 }
 export const MainProvider: FC<MainProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
+  const [allArticles, setAllArticles] = useState<ArticleType[]>([]);
+  const [popUpLocation, setPopUpLocation] = useState<PopUpLocationType | null>({
+    x: 300,
+    y: 300,
+  });
+  const [popUpInUse, setPopUpInUse] = useState(true);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 100);
+  //   return () => clearTimeout(timer);
+  // }, []);
   return (
-    <MainContext.Provider value={{}}>
-      {loading ? <HomeLoading /> : children}
+    <MainContext.Provider
+      value={{
+        popUpInUse,
+        setPopUpInUse,
+        setPopUpLocation,
+        popUpLocation,
+        allArticles,
+        setAllArticles,
+        setLoading,
+        loading,
+      }}
+    >
+      {children}
     </MainContext.Provider>
   );
 };

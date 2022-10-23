@@ -40,7 +40,7 @@ a {
 }
 #pixi-container {
   width: 100vw !important;
-  height: calc(100vh - 60px);
+  height: calc(100vh);
   /* border: 5px solid black; */
 }
 
@@ -60,4 +60,5 @@ a {
 
 .sidebar-element {
   width: 100px;
+  color: black;
 }
