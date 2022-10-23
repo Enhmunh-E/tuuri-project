@@ -1,12 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import TuuriLogo from "../public/assets/tuuriLogo.svg";
+import Link from "next/link";
 export const Header = () => {
   return (
     <header style={styles.headerContainer}>
       <div className="middleContainer">
-        <Image src={TuuriLogo} />
-        <div>Цагийн эрхи</div>
+        <Link href={"/"}>
+          <Image src={TuuriLogo} />
+        </Link>
+        <div style={{}}>Цагийн эрхи</div>
       </div>
     </header>
   );
@@ -18,5 +21,8 @@ const styles: Record<string, React.CSSProperties> = {
     // borderBottom: "1px solid #FFC909",
     display: "flex",
     alignItems: "center",
+    position: "fixed",
+    background: "white",
+    top: 0,
   },
 };

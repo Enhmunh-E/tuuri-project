@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Slider, { InnerSlider, Settings } from "react-slick";
-import styles from "../styles/Home.module.css";
+import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useMainProvider } from "../providers";
 
-const Carousel = ({ data }: any) => {
+const Carousel = () => {
+  const { allArticles } = useMainProvider();
   const settings: Settings = {
     swipeToSlide: true,
     // slidesToScroll: 3,
@@ -26,7 +27,6 @@ const Carousel = ({ data }: any) => {
   };
 
   useEffect(() => {
-    console.log("event listening...");
     window.addEventListener("scroll", (e) => {
       slide(window.scrollY);
     });
@@ -35,9 +35,12 @@ const Carousel = ({ data }: any) => {
   return (
     <div className="carousel">
       <Slider ref={(slider: Slider) => setSlider(slider)} {...settings}>
-        {data.map((d: any) => {
-          const { title } = d;
-          return <div className="sidebar-element">{title}</div>;
+        {allArticles.map((d: any, index: number) => {
+          return (
+            <div className="sidebar-element" key={index}>
+              {d.title}
+            </div>
+          );
         })}
       </Slider>
     </div>
