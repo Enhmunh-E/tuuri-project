@@ -59,8 +59,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             <Article />
             <Pixi />
           </div>
-          {/* <Carousel data={data} /> */}
-          <List data={data}></List>
+          <List></List>
         </ScrollProvider>
       </div>
     </div>
