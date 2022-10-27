@@ -59,7 +59,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             <Article />
             <Pixi />
           </div>
-          <List></List>
+          <List />
         </ScrollProvider>
       </div>
     </div>

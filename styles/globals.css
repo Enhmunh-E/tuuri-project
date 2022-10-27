@@ -16,6 +16,10 @@ a {
   box-sizing: border-box;
 }
 
+:root {
+  --black: #2f2a2e;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -102,8 +106,8 @@ a {
 }
 
 .list {
-  height: 560px;
-  width: 300px;
+  height: 500px;
+  width: 400px;
   position: absolute;
   overflow: auto;
   cursor: grab;
@@ -113,28 +117,78 @@ a {
   transform: translate(0, -50%);
 }
 
-.list-element {
-  height: 100px;
+/* .selected {
   display: flex;
-  /* margin: 10px 0px 10px 0; */
   margin-top: 10px;
   margin-bottom: 10px;
   align-items: center;
   justify-content: space-between;
-  /* border: 1px solid black; */
-  position: relative;
-  color: black;
+} */
+
+.list-element {
+  height: 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  /* justify-content: space-between; */
+  color: var(--black);
 }
 
 .list-element > .title {
+  /* padding-left: 20px; */
+  /* padding-top: 10px; */
+  /* padding-bottom: 10px; */
+  /* padding-right: 10px; */
+  padding: 10px 10px 10px 20px;
+  font-size: 1rem;
   width: 70%;
 }
 
 .list-element > .year {
-  width: 20%;
-  margin-right: 10%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 0.8rem;
+  border-right: 2px solid orange;
+  /* width: 23%; */
+  margin-right: 0;
 }
 
+.year-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 400;
+  width: 50px;
+  height: 50px;
+}
+
+.title-content {
+  font-weight: 400;
+  padding: 12px 16px 12px 16px;
+}
+
+.year > .selected {
+  font-weight: 600;
+  height: 70px;
+  width: 70px;
+  font-size: 1.1rem;
+  border-radius: 50%;
+  background-color: #ffce9b;
+}
+
+.title > .selected {
+  font-size: 1.2rem;
+  font-weight: 500;
+  /* padding: 14px; */
+  border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05), 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+}
 /* Designing for scroll-bar */
 ::-webkit-scrollbar {
   width: 1px;
