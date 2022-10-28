@@ -43,7 +43,7 @@ const PixiComponent = () => {
     let totalCircleCount = 5000,
       circlePerLoop = 100,
       maxRenderDistance = 5000,
-      maxCircleSize = 15;
+      maxCircleSize = 14;
 
     let Circles = [],
       frontIndex = totalCircleCount - 1,
@@ -70,15 +70,15 @@ const PixiComponent = () => {
 
     const sizeFinder = (index) => {
       let size = maxCircleSize;
-      let distance = frontIndex - index,
-        reductionPerDistance = 0.005;
-      size -= distance * reductionPerDistance;
       let angle =
         (((360 / circlePerLoop / 2 + 360) / circlePerLoop) * index + 270) % 360;
       let angleDistance = angle,
-        reductionPerAngle = 0.05;
+        reductionPerAngle = 0.06;
       if (angleDistance > 180) angleDistance = 360 - angleDistance;
       size -= angleDistance * reductionPerAngle;
+      let distance = frontIndex - index,
+        reductionPerDistance = 0.003;
+      size -= distance * reductionPerDistance;
       size = Math.max(size, 0.001);
       return size;
     };
@@ -115,10 +115,10 @@ const PixiComponent = () => {
 
       let random = Math.random() * 50,
         type = "instant",
-        speed = 0.5;
+        speed = 10;
       if (random <= 20) {
         type = "delayed";
-        let speedrand = Math.floor(Math.random() * 5) + 0.5;
+        let speedrand = Math.floor(Math.random() * 8) + 0.5;
         speed = speedrand;
       }
       Circles.push({
@@ -199,8 +199,8 @@ const PixiComponent = () => {
     window.addEventListener("pointermove", (e) => {
       let x = window.innerWidth / 2 - e.x,
         y = window.innerHeight / 2 - e.y;
-      let Rchange = 15,
-        rChange = 5;
+      let Rchange = 12,
+        rChange = 2.5;
       Rx = appWidth / 2 + x / Rchange;
       Ry = appHeight / 2 + (y / Rchange) * aspectRatio;
       rX = appWidth / 2 + x / rChange;
@@ -213,30 +213,33 @@ const PixiComponent = () => {
       for (let i = 0; i < totalCircleCount; i++) {
         let coordinate = coordinateFinder(i),
           size = sizeFinder(i),
-          delay = 0;
+          delay = 2;
+        let renderDistance = Math.min(maxRenderDistance, frontIndex);
+
         if (
           Circles[i].type == "instant" ||
-          frontIndex - i <= circlePerLoop * 5 ||
-          resIndex != frontIndex
+          i < frontIndex - renderDistance ||
+          i > frontIndex
         ) {
           Circles[i].circle.x = coordinate.x;
           Circles[i].circle.y = coordinate.y;
         } else {
           let speed = Circles[i].speed;
-          if (Circles[i].lastMove < elapsed - delay) {
-            let dist = distFinder(
-              Circles[i].circle.x,
-              coordinate.x,
-              Circles[i].circle.y,
-              coordinate.y
-            );
-            let angle = angleFinder(
-              Circles[i].circle.x,
-              coordinate.x,
-              Circles[i].circle.y,
-              coordinate.y
-            );
+          if (resIndex != frontIndex) speed *= 1.2;
+          let dist = distFinder(
+            Circles[i].circle.x,
+            coordinate.x,
+            Circles[i].circle.y,
+            coordinate.y
+          );
+          let angle = angleFinder(
+            Circles[i].circle.x,
+            coordinate.x,
+            Circles[i].circle.y,
+            coordinate.y
+          );
 
+          if (elapsed >= Circles[i].lastMove + delay) {
             if (dist <= speed * delta) {
               Circles[i].circle.x = coordinate.x;
               Circles[i].circle.y = coordinate.y;
