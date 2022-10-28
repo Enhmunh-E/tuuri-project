@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Header } from "../../components";
 import { Block } from "../../components/Block";
 import { ArticleType } from "../../components/types";
@@ -8,8 +8,21 @@ import styles from "../../styles/article.module.css";
 import { fetchEntries } from "../../util/contentfulArticles";
 
 export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
-  console.log(articles[0]);
-  const articleNumber = 0;
+  const { currentDataIndex } = useMainProvider();
+  const [isRelay, setIsRelay] = useState(true);
+  const router = useRouter();
+  const article = useMemo(() => {
+    if (articles[currentDataIndex]) {
+      return articles[currentDataIndex];
+    }
+    return articles.find((article) => article.fields.title == router.query.id);
+  }, [articles]);
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setIsRelay(false);
+    }, 200);
+    return () => clearTimeout(timeOut);
+  }, []);
   return (
     <div
       style={{
@@ -18,21 +31,21 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
         overflowY: "scroll",
         overflowX: "hidden",
         background: "white",
+        opacity: isRelay ? 0 : 1,
+        transition: "all 200ms",
       }}
     >
       <Header />
       <div
         className={styles.articleIntro}
         style={{
-          backgroundImage: `url(${articles[articleNumber]?.backgroundImage.fields.file.url})`,
+          backgroundImage: `url(${article?.fields?.backgroundImage.fields.file.url})`,
         }}
       >
-        <div className={styles.articleTitle}>
-          {articles[articleNumber]?.title}
-        </div>
+        <div className={styles.articleTitle}>{article?.fields.title}</div>
         <div className={styles.articleDescription}>
-          Унших цаг {articles[articleNumber]?.readTime} мин
-          {articles[articleNumber]?.topic.map((topic: string) => ` • ${topic}`)}
+          Унших цаг {article?.fields?.readTime} мин
+          {article?.fields.topic.map((topic: string) => ` • ${topic}`)}
         </div>
       </div>
       <div
@@ -41,7 +54,7 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
         }}
       >
         <div className={styles.articleTextContainer}>
-          {articles[articleNumber]?.blocks.map((block: any, index: number) => (
+          {article?.fields.blocks.map((block: any, index: number) => (
             <Block data={block} key={index} />
           ))}
         </div>
@@ -52,9 +65,8 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
 
 export async function getServerSideProps() {
   const res = await fetchEntries();
-  const articles = await res?.map((p) => {
-    return p.fields;
-  });
+
+  const articles = res?.filter((p) => p.sys.contentType.sys.id == "article");
   return {
     props: {
       articles,

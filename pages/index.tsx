@@ -1,11 +1,9 @@
-import type { NextPage } from "next";
 import { Header } from "../components";
 import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
 import { createClient, Entry } from "contentful";
-import Carousel from "../components/Carousel";
 import { useMainProvider } from "../providers";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Article } from "../components/Article";
 import HomeLoading from "../components/HomeLoading";
 import { fetchEntries } from "../util/contentfulArticles";
@@ -41,22 +39,35 @@ const data = [
 // };
 
 const Home = ({ articles }: { articles: ArticleType[] }) => {
-  const { setAllArticles, setLoading, loading } = useMainProvider();
+  const { setAllArticles, setLoading, loading, currentDataIndex } =
+    useMainProvider();
+  const [transition, setTransition] = useState(false);
   useEffect(() => {
     setAllArticles(articles);
     setLoading(false);
   }, [articles, setAllArticles, setLoading]);
+  useEffect(() => {
+    const timeOut = setTimeout(() => {
+      setTransition(true);
+    }, 400);
+    return () => clearTimeout(timeOut);
+  }, []);
   if (loading) return <HomeLoading />;
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{
+        transition: "all 400ms",
+        opacity: transition ? 1 : 0,
+      }}
+    >
       <div className="rel">
-        <Header />
         <ScrollProvider>
           <div
             id="pixi-container"
             style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
           >
-            <Article />
+            <Article setTransition={setTransition} />
             <Pixi />
           </div>
           <List />
@@ -66,21 +77,10 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
   );
 };
 
-const homeStyles: Record<string, React.CSSProperties> = {
-  bottomContainer: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "row",
-    height: "calc(100vh)",
-    paddingTop: "40px",
-    overflow: "hidden",
-  },
-};
 export async function getStaticProps() {
   const res = await fetchEntries();
-  const articles = await res?.map((p) => {
-    return p.fields;
-  });
+
+  const articles = res?.filter((p) => p.sys.contentType.sys.id == "article");
   return {
     props: {
       articles,

@@ -18,11 +18,13 @@ const styles: Record<string, React.CSSProperties> = {
   headerContainer: {
     height: "60px",
     width: "100%",
+    padding: "0px calc((100vw - 1280px) / 2)",
     // borderBottom: "1px solid #FFC909",
     display: "flex",
     alignItems: "center",
     position: "fixed",
     background: "white",
     top: 0,
+    zIndex: 10,
   },
 };

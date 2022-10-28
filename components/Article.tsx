@@ -1,14 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { Dispatch, SetStateAction } from "react";
 import { useMainProvider } from "../providers";
 import styles from "../styles/article.module.css";
 import { fetchEntries } from "../util/contentfulArticles";
 
-export const Article = () => {
-  const { popUpLocation, popUpInUse, allArticles } = useMainProvider();
-  const articleNumber = 0;
+export const Article = ({
+  setTransition,
+}: {
+  setTransition: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { popUpLocation, popUpInUse, allArticles, currentDataIndex } =
+    useMainProvider();
+  const router = useRouter();
   return (
     <div
       className={styles.articleContainer}
@@ -20,15 +26,22 @@ export const Article = () => {
         marginTop: popUpInUse ? "0px" : "100px",
       }}
     >
-      <Link
+      <div
         style={{
           width: popUpInUse ? "200px" : "0px",
           height: popUpInUse ? "200px" : "0px",
         }}
-        href={`/articles/${allArticles[articleNumber]?.title}`}
+        onClick={() => {
+          setTransition(false);
+          setTimeout(() => {
+            router.push(
+              `/articles/${allArticles[currentDataIndex]?.fields.title}`
+            );
+          }, 200);
+        }}
       >
         <img
-          src={allArticles[articleNumber]?.coverPic.fields.file.url}
+          src={allArticles[currentDataIndex]?.fields.coverPic.fields.file.url}
           draggable={"false"}
           alt="cover"
           className={styles.articleCover}
@@ -36,7 +49,7 @@ export const Article = () => {
             opacity: 1,
           }}
         />
-      </Link>
+      </div>
       <div
         className={styles.articleContentContainer}
         style={{
@@ -52,7 +65,7 @@ export const Article = () => {
             textAlign: "center",
           }}
         >
-          {allArticles[0]?.eventDate}
+          {allArticles[currentDataIndex]?.fields.eventDate}
         </div>
         <div
           style={{
@@ -62,7 +75,7 @@ export const Article = () => {
             margin: "0px 8px",
           }}
         />
-        <div>{allArticles[0]?.title}</div>
+        <div>{allArticles[currentDataIndex]?.fields.title}</div>
       </div>
     </div>
   );
