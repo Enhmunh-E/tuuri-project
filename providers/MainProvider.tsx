@@ -45,12 +45,12 @@ export const MainProvider: FC<MainProviderProps> = ({ children }) => {
     y: 300,
   });
   const [popUpInUse, setPopUpInUse] = useState(true);
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 100);
-  //   return () => clearTimeout(timer);
-  // }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <MainContext.Provider
       value={{
@@ -66,7 +66,7 @@ export const MainProvider: FC<MainProviderProps> = ({ children }) => {
         setCurrentDataIndex,
       }}
     >
-      {children}
+      {loading ? <HomeLoading /> : children}
     </MainContext.Provider>
   );
 };

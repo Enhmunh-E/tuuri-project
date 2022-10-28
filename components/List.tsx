@@ -6,20 +6,20 @@ const List = () => {
   const { scroll } = useScrollContext();
   const { currentDataIndex, setCurrentDataIndex, allArticles } =
     useMainProvider();
-
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [showArticles, setShowArticles] = useState(allArticles);
 
   useEffect(() => {
     const dummy: ArticleType = {
-      title: "dummy",
+      fields: {
+        title: "dummy",
+      },
     } as ArticleType;
 
     const ar = [dummy, dummy, ...allArticles, dummy, dummy];
-    console.log(ar);
     setShowArticles(ar);
-  }, []);
+  }, [allArticles]);
 
   useEffect(() => {
     const nextTop = Math.min(
@@ -33,16 +33,15 @@ const List = () => {
         behavior: "smooth",
       });
     }
-    console.log(currentDataIndex);
     setScrollTop(nextTop);
-  }, [scroll]);
+  }, [scroll, showArticles]);
 
   return (
     <div className="list" ref={scrollRef}>
       {showArticles?.map((d: any, index: number) => {
-        const { title, eventDate } = d;
+        const { title, eventDate } = d.fields;
         if (title === "dummy") {
-          return <div className="list-element"></div>;
+          return <div className="list-element" key={index}></div>;
         }
         return index !== currentDataIndex + 2 ? (
           <div className="list-element" key={index}>

@@ -1,30 +1,17 @@
 export type ArticleType = {
-  title: string;
-  coverPic: {
-    fields: {
-      file: {
-        url: string;
-      };
-    };
-  };
-  eventDate: number;
-  readTime: number;
-  topic: string[];
-  backgroundImage: {
-    fields: {
-      description: string;
-      file: {
-        url: string;
-      };
-      title: string;
-    };
-  };
-  blocks: BlockType[];
-};
-
-export type BlockType = {
   fields: {
-    image?: {
+    title: string;
+    coverPic: {
+      fields: {
+        file: {
+          url: string;
+        };
+      };
+    };
+    eventDate: number;
+    readTime: number;
+    topic: string[];
+    backgroundImage: {
       fields: {
         description: string;
         file: {
@@ -33,6 +20,34 @@ export type BlockType = {
         title: string;
       };
     };
-    text?: string;
+    blocks: BlockType[];
   };
+  sys: {
+    contentType: {
+      sys: {
+        id: string;
+      };
+    };
+  };
+};
+
+export type BlockType = {
+  image?: {
+    fields: {
+      description: string;
+      file: {
+        url: string;
+      };
+      title: string;
+    };
+  };
+  // texts?: {
+  //   fields: {
+  //     text: {
+  //       fields: {
+  //         text: string;
+  //       };
+  //     };
+  //   };
+  // }[];
 };

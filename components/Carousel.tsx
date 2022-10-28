@@ -38,12 +38,12 @@ const Carousel = ({ data }: any) => {
           {data.map((d: any, index: number) => {
             const { title, year } = d;
             return index !== currentDataIndex + 3 ? (
-              <div className="sidebar-element">
+              <div className="sidebar-element" key={index}>
                 <div className="year">{year}</div>
                 <div className="title">{title}</div>
               </div>
             ) : (
-              <div className="sidebar-helement">
+              <div className="sidebar-helement" key={index}>
                 <div className="year">{year}</div>
                 <div className="title">{title}</div>
               </div>
