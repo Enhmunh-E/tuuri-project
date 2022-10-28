@@ -7,7 +7,8 @@ import { useScrollContext } from "../providers";
 const PixiComponent = () => {
   let gameCanvas = <></>;
   let app = PIXI.Application;
-  const { setPopUpLocation, setPopUpInUse, popUpLocation } = useMainProvider();
+  const { setPopUpLocation, setPopUpInUse, popUpLocation, allArticles } =
+    useMainProvider();
   // console.log(popUpLocation);
   const { scroll, setScroll } = useScrollContext();
 
@@ -48,7 +49,9 @@ const PixiComponent = () => {
     let Circles = [],
       frontIndex = totalCircleCount - 1,
       resIndex = totalCircleCount - 1,
-      circleSizeCorrect = true;
+      circleSizeCorrect = true,
+      articlelen = 10,
+      totalScroll = 100 * (articlelen - 5);
 
     const coordinateFinder = (index) => {
       let angle =
@@ -190,9 +193,20 @@ const PixiComponent = () => {
     app.stage.sortableChildren = true;
 
     window.addEventListener("mousewheel", (e) => {
-      resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
-      resIndex = Math.max(resIndex, circlePerLoop);
-      resIndex = Math.min(resIndex, totalCircleCount - 1);
+      totalScroll = Math.min(
+        Math.max(totalScroll + e.deltaY, 0),
+        100 * (articlelen - 1)
+      );
+
+      // resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
+      // resIndex = Math.max(resIndex, circlePerLoop);
+      // resIndex = Math.min(resIndex, totalCircleCount - 1);
+
+      resIndex =
+        (Math.floor(totalScroll / 100) *
+          (totalCircleCount - circlePerLoop * 2)) /
+          articlelen +
+        circlePerLoop * 2;
       setScroll(e.deltaY);
     });
 
