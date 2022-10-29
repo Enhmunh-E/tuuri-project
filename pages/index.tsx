@@ -43,6 +43,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
     useMainProvider();
   const [transition, setTransition] = useState(false);
   useEffect(() => {
+    if (articles.length == 0) return;
     setAllArticles(articles);
     setLoading(false);
   }, [articles, setAllArticles, setLoading]);
@@ -52,7 +53,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
     }, 400);
     return () => clearTimeout(timeOut);
   }, []);
-  if (loading) return <HomeLoading />;
+  // if (loading) return <HomeLoading />;
   return (
     <div
       className={styles.container}

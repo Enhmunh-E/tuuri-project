@@ -19,13 +19,9 @@ interface ScrollProviderProps {
 }
 
 export const ScrollProvider: FC<ScrollProviderProps> = ({ children }) => {
-  const [scroll, setScroll] = useState<number>(0);
+  // const [scroll, setScroll] = useState<number>(0);
 
-  return (
-    <ScrollContext.Provider value={{ scroll, setScroll }}>
-      {children}
-    </ScrollContext.Provider>
-  );
+  return <ScrollContext.Provider value={{}}>{children}</ScrollContext.Provider>;
 };
 
 export const useScrollContext = (): ScrollContextInterface =>

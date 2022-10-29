@@ -7,13 +7,15 @@ import { useScrollContext } from "../providers";
 const PixiComponent = () => {
   let gameCanvas = <></>;
   let app = PIXI.Application;
-  const { setPopUpLocation, setPopUpInUse, popUpLocation, allArticles } =
-    useMainProvider();
+  const {
+    setPopUpLocation,
+    setPopUpInUse,
+    popUpInUse,
+    popUpLocation,
+    allArticles,
+  } = useMainProvider();
   // console.log(popUpLocation);
-  const { scroll, setScroll } = useScrollContext();
 
-  const [popupLocation, setPopupLocation] = useState(null);
-  const [popupInUse, setPopupInUse] = useState(false);
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
@@ -192,23 +194,48 @@ const PixiComponent = () => {
 
     app.stage.sortableChildren = true;
 
-    window.addEventListener("mousewheel", (e) => {
-      totalScroll = Math.min(
-        Math.max(totalScroll + e.deltaY, 0),
-        100 * (articlelen - 1)
-      );
+    // document.getElementById("list").addEventListener("scroll", (e) => {
+    //   if (articlelen == 0) return;
+    //   // resIndex = e.target.scrollTop * 10;
+    //   // resIndex = Math.max(resIndex, circlePerLoop);
+    //   // resIndex = Math.min(resIndex, totalCircleCount - 1);
+    //   // setScroll(e.target.scrollTop);
+    //   console.log(articlelen);
+    //   totalScroll = Math.min(
+    //     Math.max(totalScroll + e.target.scrollTop, 0),
+    //     100 * (articlelen - 1)
+    //   );
+    //   resIndex =
+    //     (Math.floor(totalScroll / 100) *
+    //       (totalCircleCount - circlePerLoop * 2)) /
+    //       articlelen +
+    //     circlePerLoop * 2;
+    //   setScroll(e.deltaY);
+    // });
 
-      // resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
-      // resIndex = Math.max(resIndex, circlePerLoop);
-      // resIndex = Math.min(resIndex, totalCircleCount - 1);
+    // window.addEventListener("mousewheel", (e) => {
+    //   totalScroll = Math.min(
+    //     Math.max(totalScroll + e.deltaY, 0),
+    //     100 * (articlelen - 1)
+    //   );
 
-      resIndex =
-        (Math.floor(totalScroll / 100) *
-          (totalCircleCount - circlePerLoop * 2)) /
-          articlelen +
-        circlePerLoop * 2;
-      setScroll(e.deltaY);
-    });
+    //   // resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
+    //   // resIndex = Math.max(resIndex, circlePerLoop);
+    //   // resIndex = Math.min(resIndex, totalCircleCount - 1);
+
+    //   resIndex =
+    //     (Math.floor(totalScroll / 100) *
+    //       (totalCircleCount - circlePerLoop * 2)) /
+    //       articlelen +
+    //     circlePerLoop * 2;
+    //   setScroll(e.deltaY);
+
+    // window.addEventListener("mousewheel", (e) => {
+    // resIndex += Math.floor((e.deltaY * Math.floor(Math.random() * 10)) / 10);
+    // resIndex = Math.max(resIndex, circlePerLoop);
+    // resIndex = Math.min(resIndex, totalCircleCount - 1);
+    //   setScroll(e.deltaY);
+    // });
 
     window.addEventListener("pointermove", (e) => {
       let x = window.innerWidth / 2 - e.x,
@@ -222,6 +249,13 @@ const PixiComponent = () => {
     });
 
     app.ticker.add((delta) => {
+      resIndex = Math.floor(
+        ((document.getElementById("list").scrollTop / 100) *
+          (totalCircleCount - circlePerLoop * 2 - 1)) /
+          articlelen +
+          circlePerLoop * 2
+      );
+
       elapsed += delta;
       let dotRemoved = 0;
       for (let i = 0; i < totalCircleCount; i++) {
