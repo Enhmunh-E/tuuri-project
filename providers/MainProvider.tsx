@@ -39,18 +39,11 @@ interface MainProviderProps {
 export const MainProvider: FC<MainProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [allArticles, setAllArticles] = useState<ArticleType[]>([]);
-  const [currentDataIndex, setCurrentDataIndex] = useState<number>();
-  const [popUpLocation, setPopUpLocation] = useState<PopUpLocationType | null>({
-    x: 300,
-    y: 300,
-  });
+  const [currentDataIndex, setCurrentDataIndex] = useState<number>(0);
+  const [popUpLocation, setPopUpLocation] = useState<PopUpLocationType | null>(
+    null
+  );
   const [popUpInUse, setPopUpInUse] = useState(true);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <MainContext.Provider
       value={{
@@ -66,7 +59,8 @@ export const MainProvider: FC<MainProviderProps> = ({ children }) => {
         setCurrentDataIndex,
       }}
     >
-      {loading ? <HomeLoading /> : children}
+      {loading && <HomeLoading />}
+      {children}
     </MainContext.Provider>
   );
 };

@@ -3,13 +3,10 @@ import { useMainProvider, useScrollContext } from "../providers";
 import { ArticleType } from "./types";
 
 const List = () => {
-  const { scroll } = useScrollContext();
   const { currentDataIndex, setCurrentDataIndex, allArticles } =
     useMainProvider();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrollTop, setScrollTop] = useState(0);
   const [showArticles, setShowArticles] = useState(allArticles);
-
   useEffect(() => {
     const dummy: ArticleType = {
       fields: {
@@ -20,24 +17,16 @@ const List = () => {
     const ar = [dummy, dummy, ...allArticles, dummy, dummy];
     setShowArticles(ar);
   }, [allArticles]);
-
-  useEffect(() => {
-    const nextTop = Math.min(
-      Math.max(scrollTop + scroll, 0),
-      100 * (showArticles.length - 5)
-    );
-    setCurrentDataIndex(Math.floor(nextTop / 100));
-    if (scrollRef?.current) {
-      scrollRef?.current.scrollTo({
-        top: Math.floor(nextTop / 100) * 100,
-        behavior: "smooth",
-      });
-    }
-    setScrollTop(nextTop);
-  }, [scroll, showArticles]);
-
   return (
-    <div className="list" ref={scrollRef}>
+    <div
+      className="list"
+      id="list"
+      ref={scrollRef}
+      onScroll={(e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        const target = e.target as HTMLDivElement;
+        setCurrentDataIndex(Math.floor(target.scrollTop / 100));
+      }}
+    >
       {showArticles?.map((d: any, index: number) => {
         const { title, eventDate } = d.fields;
         if (title === "dummy") {
