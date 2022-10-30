@@ -65,6 +65,59 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
       <div className="rel">
         <ScrollProvider>
           <div
+            id="scrollIdentifier"
+            style={{
+              height: "100vh",
+              width: "100vw",
+              position: "absolute",
+              top: -60,
+              left: 0,
+              opacity: 1,
+              zIndex: 1,
+              overflow: "scroll",
+              scrollSnapType: "y mandatory",
+            }}
+          >
+            <div
+              style={{
+                height: "20vh",
+                scrollSnapAlign: "start",
+                border: "1px solid black",
+              }}
+            />
+            <div
+              style={{
+                height: "20vh",
+                scrollSnapAlign: "start",
+                border: "1px solid black",
+              }}
+            />
+            {articles.map((_, index) => (
+              <div
+                key={index}
+                style={{
+                  height: "20vh",
+                  scrollSnapAlign: "start",
+                  border: "1px solid black",
+                }}
+              />
+            ))}
+            <div
+              style={{
+                height: "20vh",
+                scrollSnapAlign: "start",
+                border: "1px solid black",
+              }}
+            />
+            <div
+              style={{
+                height: "20vh",
+                scrollSnapAlign: "start",
+                border: "1px solid black",
+              }}
+            />
+          </div>
+          <div
             id="pixi-container"
             style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
           >
