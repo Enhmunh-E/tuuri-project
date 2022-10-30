@@ -40,6 +40,8 @@ const data = [
 const Home = ({ articles }: { articles: ArticleType[] }) => {
   const { setAllArticles, currentDataIndex } = useMainProvider();
   const [transition, setTransition] = useState(false);
+  const dummy: ArticleType = {} as ArticleType;
+
   useEffect(() => {
     if (articles.length == 0) return;
     setAllArticles(articles);
@@ -59,6 +61,30 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
         opacity: transition ? 1 : 0,
       }}
     >
+      <div
+        id="scrollIdentifier"
+        style={{
+          height: "100vh",
+          width: "100vw",
+          position: "absolute",
+          top: -60,
+          left: 0,
+          opacity: 1,
+          zIndex: 1,
+          overflow: "scroll",
+          scrollSnapType: "y mandatory",
+        }}
+      >
+        {articles.concat(dummy, dummy, dummy, dummy).map((_, index) => (
+          <div
+            key={index}
+            style={{
+              height: "20vh",
+              scrollSnapAlign: "start",
+            }}
+          />
+        ))}
+      </div>
       <div className="rel">
         <ScrollProvider>
           <div

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import { useMainProvider, useScrollContext } from "../providers";
+import { useMainProvider } from "../providers";
 import { ArticleType } from "./types";
 
 const List = () => {
@@ -19,16 +19,29 @@ const List = () => {
     const ar = [dummy, dummy, ...allArticles, dummy, dummy];
     setShowArticles(ar);
   }, [allArticles]);
+  useEffect(() => {
+    const handleScroll: EventListener = (e) => {
+      const targetDiv: HTMLDivElement = e.target as HTMLDivElement;
+      const nextInd = Math.round(
+        targetDiv.scrollTop / (window.innerHeight / 5)
+      );
+      // elements[nextInd]?.scrollIntoView({ behavior: "smooth" });
+      scrollRef.current?.scrollTo({
+        top: nextInd * 100,
+        behavior: "smooth",
+      });
+      setCurrentDataIndex(nextInd);
+    };
+    document
+      .getElementById("scrollIdentifier")
+      ?.addEventListener("scroll", handleScroll);
+    return () =>
+      document
+        .getElementById("scrollIdentifier")
+        ?.removeEventListener("scroll", handleScroll);
+  }, [setCurrentDataIndex]);
   return (
-    <div
-      className="list"
-      id="list"
-      ref={scrollRef}
-      onScroll={(e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-        const target = e.target as HTMLDivElement;
-        setCurrentDataIndex(Math.floor(target.scrollTop / 100));
-      }}
-    >
+    <div className="list" id="list" ref={scrollRef}>
       {showArticles?.map((d: any, index: number) => {
         const { title, eventDate } = d.fields;
         if (title === "dummy") {
