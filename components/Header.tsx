@@ -7,9 +7,14 @@ export const Header = () => {
     <header style={styles.headerContainer}>
       <div className="middleContainer">
         <Link href={"/"}>
-          <Image src={TuuriLogo} />
+          <Image
+            src={TuuriLogo}
+            alt="logo"
+            style={{
+              cursor: "pointer",
+            }}
+          />
         </Link>
-        <div style={{}}>Цагийн эрхи</div>
       </div>
     </header>
   );

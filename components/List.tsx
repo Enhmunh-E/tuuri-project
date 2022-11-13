@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useMainProvider, useScrollContext } from "../providers";
 import { ArticleType } from "./types";
@@ -5,6 +6,7 @@ import { ArticleType } from "./types";
 const List = () => {
   const { currentDataIndex, setCurrentDataIndex, allArticles } =
     useMainProvider();
+  const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showArticles, setShowArticles] = useState(allArticles);
   useEffect(() => {
@@ -33,7 +35,16 @@ const List = () => {
           return <div className="list-element" key={index}></div>;
         }
         return index !== currentDataIndex + 2 ? (
-          <div className="list-element" key={index}>
+          <div
+            className="list-element"
+            onClick={() =>
+              scrollRef.current?.scrollTo({
+                top: (index - 2) * 100,
+                behavior: "smooth",
+              })
+            }
+            key={index}
+          >
             <div className="year">
               <div className="year-content">{eventDate}</div>
             </div>
@@ -42,7 +53,18 @@ const List = () => {
             </div>
           </div>
         ) : (
-          <div className="list-element" key={index}>
+          <div
+            className="list-element"
+            onClick={() => {
+              router.push(
+                `/articles/${allArticles[currentDataIndex]?.fields.title}`
+              );
+            }}
+            style={{
+              cursor: "pointer",
+            }}
+            key={index}
+          >
             <div className="year">
               <div className="year-content selected">{eventDate}</div>
             </div>

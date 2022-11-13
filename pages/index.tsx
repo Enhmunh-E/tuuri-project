@@ -5,7 +5,6 @@ import { createClient, Entry } from "contentful";
 import { useMainProvider } from "../providers";
 import { useEffect, useState } from "react";
 import { Article } from "../components/Article";
-import HomeLoading from "../components/HomeLoading";
 import { fetchEntries } from "../util/contentfulArticles";
 import { ArticleType } from "../components/types";
 import { ScrollProvider } from "../providers";
@@ -39,14 +38,12 @@ const data = [
 // };
 
 const Home = ({ articles }: { articles: ArticleType[] }) => {
-  const { setAllArticles, setLoading, loading, currentDataIndex } =
-    useMainProvider();
+  const { setAllArticles, currentDataIndex } = useMainProvider();
   const [transition, setTransition] = useState(false);
   useEffect(() => {
     if (articles.length == 0) return;
     setAllArticles(articles);
-    setLoading(false);
-  }, [articles, setAllArticles, setLoading]);
+  }, [articles, setAllArticles]);
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setTransition(true);

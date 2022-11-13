@@ -65,7 +65,6 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
 
 export async function getServerSideProps() {
   const res = await fetchEntries();
-
   const articles = res?.filter((p) => p.sys.contentType.sys.id == "article");
   return {
     props: {
