@@ -22,14 +22,14 @@ export const Article = ({
         display: popUpLocation == null ? "none" : "flex",
         top: popUpLocation ? popUpLocation?.y - 32 - 60 + "px" : "0",
         left: popUpLocation ? popUpLocation?.x - 100 + "px" : "0",
-        marginLeft: popUpInUse ? "0px" : "100px",
-        marginTop: popUpInUse ? "0px" : "100px",
+        marginLeft: popUpInUse ? "0px" : "110px",
+        marginTop: popUpInUse ? "0px" : "110px",
       }}
     >
       <div
         style={{
-          width: popUpInUse ? "200px" : "0px",
-          height: popUpInUse ? "200px" : "0px",
+          width: popUpInUse ? "180px" : "0px",
+          height: popUpInUse ? "180px" : "0px",
         }}
         onClick={() => {
           setTransition(false);
@@ -53,7 +53,7 @@ export const Article = ({
       <div
         className={styles.articleContentContainer}
         style={{
-          width: popUpInUse ? "200px" : "0px",
+          width: popUpInUse ? "180px" : "0px",
           height: popUpInUse ? "73px" : "0px",
           opacity: popUpInUse ? 1 : 0,
           display: "flex",
@@ -81,14 +81,14 @@ export const Article = ({
   );
 };
 
-export async function getStaticProps() {
-  const res = await fetchEntries();
-  const articles = await res?.map((p) => {
-    return p.fields;
-  });
-  return {
-    props: {
-      articles,
-    },
-  };
-}
+// export async function getStaticProps() {
+//   const res = await fetchEntries();
+//   const articles = await res?.map((p) => {
+//     return p.fields;
+//   });
+//   return {
+//     props: {
+//       articles,
+//     },
+//   };
+// }
