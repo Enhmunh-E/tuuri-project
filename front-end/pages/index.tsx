@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Article } from "../components/Article";
 import { fetchEntries } from "../util/contentfulArticles";
 import { ArticleType } from "../components/types";
+import { fetchAPI } from "../lib/api";
 import { ScrollProvider } from "../providers";
 import List from "../components/List";
 
@@ -75,10 +76,33 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
   );
 };
 
+// export async function getStaticProps() {
+//   // Run API calls in parallel
+//   const [articlesRes, categoriesRes, homepageRes] = await Promise.all([
+//     fetchAPI("/articles", { populate: ["image", "category"] }),
+//     fetchAPI("/categories", { populate: "*" }),
+//     fetchAPI("/homepage", {
+//       populate: {
+//         hero: "*",
+//         seo: { populate: "*" },
+//       },
+//     }),
+//   ]);
+//   return {
+//     props: {
+//       articles: articlesRes.data,
+//       categories: categoriesRes.data,
+//       homepage: homepageRes.data,
+//     },
+//     revalidate: 1,
+//   };
+// }
+
 export async function getStaticProps() {
   const res = await fetchEntries();
 
   const articles = res?.filter((p) => p.sys.contentType.sys.id == "article");
+  // console.log(articles);
   return {
     props: {
       articles,
