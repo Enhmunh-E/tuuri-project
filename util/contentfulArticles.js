@@ -1,13 +1,14 @@
 const space = process.env.CONTENTFUL_SPACE_ID;
 const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
 
+console.log(space, accessToken);
 const client = require("contentful").createClient({
-  space: "ot7ue7caqpfv",
-  accessToken: "xinOwl-WtdUiaiWBD_jOtdvyB6U7YYHtkekzWa2yzzY",
+  space: space,
+  accessToken: accessToken,
 });
 
 export async function fetchEntries() {
-  const entries = await client.getEntries();
+  const entries = await client.getEntries({});
   if (entries.items) return entries.items;
   console.log(`Error getting Entries for ${contentType.name}.`);
 }

@@ -5,7 +5,6 @@ import { createClient, Entry } from "contentful";
 import { useMainProvider } from "../providers";
 import { useEffect, useState } from "react";
 import { Article } from "../components/Article";
-import HomeLoading from "../components/HomeLoading";
 import { fetchEntries } from "../util/contentfulArticles";
 import { ArticleType } from "../components/types";
 import { ScrollProvider } from "../providers";
@@ -39,14 +38,14 @@ const data = [
 // };
 
 const Home = ({ articles }: { articles: ArticleType[] }) => {
-  const { setAllArticles, setLoading, loading, currentDataIndex } =
-    useMainProvider();
+  const { setAllArticles, currentDataIndex } = useMainProvider();
   const [transition, setTransition] = useState(false);
+  const dummy: ArticleType = {} as ArticleType;
+
   useEffect(() => {
     if (articles.length == 0) return;
     setAllArticles(articles);
-    setLoading(false);
-  }, [articles, setAllArticles, setLoading]);
+  }, [articles, setAllArticles]);
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setTransition(true);
@@ -64,59 +63,6 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
     >
       <div className="rel">
         <ScrollProvider>
-          <div
-            id="scrollIdentifier"
-            style={{
-              height: "100vh",
-              width: "100vw",
-              position: "absolute",
-              top: -60,
-              left: 0,
-              opacity: 1,
-              zIndex: 1,
-              overflow: "scroll",
-              scrollSnapType: "y mandatory",
-            }}
-          >
-            <div
-              style={{
-                height: "20vh",
-                scrollSnapAlign: "start",
-                border: "1px solid black",
-              }}
-            />
-            <div
-              style={{
-                height: "20vh",
-                scrollSnapAlign: "start",
-                border: "1px solid black",
-              }}
-            />
-            {articles.map((_, index) => (
-              <div
-                key={index}
-                style={{
-                  height: "20vh",
-                  scrollSnapAlign: "start",
-                  border: "1px solid black",
-                }}
-              />
-            ))}
-            <div
-              style={{
-                height: "20vh",
-                scrollSnapAlign: "start",
-                border: "1px solid black",
-              }}
-            />
-            <div
-              style={{
-                height: "20vh",
-                scrollSnapAlign: "start",
-                border: "1px solid black",
-              }}
-            />
-          </div>
           <div
             id="pixi-container"
             style={{ display: "inline-flex", height: "100vh", width: "100vw" }}

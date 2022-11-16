@@ -116,7 +116,7 @@ a {
   top: 50%;
   left: 0;
   transform: translate(0, -50%);
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
 }
 
 /* .selected {
@@ -130,11 +130,11 @@ a {
 .list-element {
   height: 100px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   /* justify-content: space-between; */
   color: var(--black);
-  scroll-snap-align: start;
+  /* scroll-snap-align: start; */
 }
 
 .list-element > .title {
@@ -159,6 +159,7 @@ a {
   border-right: 2px solid orange;
   /* width: 23%; */
   margin-right: 0;
+  width: 100px;
 }
 
 .year-content {
