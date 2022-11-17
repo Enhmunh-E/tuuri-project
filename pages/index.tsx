@@ -40,6 +40,8 @@ const data = [
 const Home = ({ articles }: { articles: ArticleType[] }) => {
   const { setAllArticles, currentDataIndex } = useMainProvider();
   const [transition, setTransition] = useState(false);
+  const dummy: ArticleType = {} as ArticleType;
+
   useEffect(() => {
     if (articles.length == 0) return;
     setAllArticles(articles);

@@ -78,7 +78,7 @@ const distFinder = (x1, x2, y1, y2) => {
   return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 };
 
-console.log(((Math.atan(1) + Math.PI) * 180) / Math.PI);
+// console.log(((Math.atan(1) + Math.PI) * 180) / Math.PI);
 
 const angleFinder = (x1, x2, y1, y2) => {
   // console.log(x1, x2, y1, y2);

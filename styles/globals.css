@@ -116,7 +116,7 @@ a {
   top: 50%;
   left: 0;
   transform: translate(0, -50%);
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
 }
 
 /* .selected {
@@ -134,7 +134,7 @@ a {
   align-items: center;
   /* justify-content: space-between; */
   color: var(--black);
-  scroll-snap-align: start;
+  /* scroll-snap-align: start; */
 }
 
 .list-element > .title {
