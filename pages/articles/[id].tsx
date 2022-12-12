@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import { Header } from "../../components";
+import { NextSeo } from "next-seo";
 import { Block } from "../../components/Block";
 import { ArticleType } from "../../components/types";
 import { useMainProvider } from "../../providers";
@@ -17,6 +18,7 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
     }
     return articles.find((article) => article.fields.title == router.query.id);
   }, [articles]);
+  console.log(article);
   useEffect(() => {
     const timeOut = setTimeout(() => {
       setIsRelay(false);
@@ -36,6 +38,22 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
       }}
     >
       <Header />
+      <NextSeo
+        openGraph={{
+          title: article?.fields.title,
+          description: article?.fields.title,
+          url: `https://www.tuuri.mn/articles/${article?.fields.title}`,
+          type: "article",
+          images: [
+            {
+              url: article?.fields.coverPic.fields.file.url ?? "",
+              width: 850,
+              height: 650,
+              alt: "Cover of the Article",
+            },
+          ],
+        }}
+      />
       <div
         className={styles.articleIntro}
         style={{
