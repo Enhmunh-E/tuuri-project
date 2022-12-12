@@ -6,7 +6,7 @@ import { ArticleType } from "../../components/types";
 import { useMainProvider } from "../../providers";
 import styles from "../../styles/article.module.css";
 import { fetchEntries } from "../../util/contentfulArticles";
-
+import { NextSeo } from "next-seo";
 export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
   const { currentDataIndex } = useMainProvider();
   const [isRelay, setIsRelay] = useState(true);
@@ -36,6 +36,22 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
       }}
     >
       <Header />
+      <NextSeo
+        openGraph={{
+          title: article?.fields.title,
+          description: article?.fields.title,
+          url: `https://www.tuuri.mn/articles/${article?.fields.title}`,
+          type: "article",
+          images: [
+            {
+              url: article?.fields.coverPic.fields.file.url ?? "",
+              width: 850,
+              height: 650,
+              alt: "Cover of the Article",
+            },
+          ],
+        }}
+      />
       <div
         className={styles.articleIntro}
         style={{
