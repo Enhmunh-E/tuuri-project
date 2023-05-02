@@ -1,17 +1,18 @@
 .container {
-  margin: 0;
-  background: #ffffff;
-  /* background-image: url("../public/assets/texture-modified.png"); */
-  background-size: 300px 300px;
-  background-blend-mode: color-burn;
-  height: 100vh;
-  /* position: relative; */
-  /* padding: 0 10vw 0 10vw; */
-  width: 100vw;
-  padding: 0 calc((100vw - 1280px) / 2);
-  padding-top: 60px;
-  display: flex;
-  align-items: center;
-  /* justify-content: center; */
-  flex-direction: column;
+    margin: 0;
+    background: #ffffff;
+    /* background-image: url("../public/assets/texture-modified.png"); */
+    background-size: 300px 300px;
+    background-blend-mode: color-burn;
+    height: 100vh;
+    /* position: relative; */
+    /* padding: 0 10vw 0 10vw; */
+    width: 100vw;
+    /* padding: 0 calc((100vw - 1280px) / 2); */
+    padding: 0 50px;
+    padding-top: 60px;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    flex-direction: column;
 }
