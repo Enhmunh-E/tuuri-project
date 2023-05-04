@@ -15,7 +15,9 @@ export const AnimatedToScroll = ({
 }: PropsType) => {
   return (
     <div
-      className={`flex items-center flex-col gap-3 cursor-pointer absolute bottom-12`}
+      className={`flex items-center flex-col gap-3 cursor-pointer absolute ${
+        position == "bottom" ? "bottom-12" : "top-14"
+      }`}
       onClick={() => {
         onClick && onClick();
       }}

@@ -141,10 +141,11 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
               display: "inline-flex",
               height: "100vh",
               width: "100vw",
+              marginTop: "-60px",
             }}
           >
             <Article setTransition={setTransition} />
-            <Pixi />
+            <Pixi visibleState={visibleState} />
           </div>
           <ListMobile />
           <AnimatedToScroll

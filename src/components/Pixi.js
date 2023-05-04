@@ -3,7 +3,7 @@ import * as PIXI from "pixi.js";
 import "pixi-spine";
 import { useMainProvider } from "../providers";
 
-const PixiComponent = () => {
+const PixiComponent = ({ visibleState }) => {
   let gameCanvas = <></>;
   let app = PIXI.Application;
   const {
@@ -33,7 +33,7 @@ const PixiComponent = () => {
 
     let elapsed = 0.0;
     // Radius of large and small circle
-    let R = 250,
+    let R = 200,
       r = 50;
 
     // Cordinates of the circles
@@ -147,7 +147,7 @@ const PixiComponent = () => {
         x: 0,
         y: 0,
       },
-      delay: 30,
+      delay: 5,
     };
 
     function SpriteDataSet(
@@ -249,7 +249,7 @@ const PixiComponent = () => {
 
     app.ticker.add((delta) => {
       resIndex = Math.floor(
-        ((document.getElementById("list").scrollLeft / 192) *
+        ((document.getElementById("list").scrollLeft / 256) *
           (totalCircleCount - circlePerLoop * 2 - 1)) /
           articlelen +
           circlePerLoop * 2
@@ -262,6 +262,10 @@ const PixiComponent = () => {
           size = sizeFinder(i),
           delay = 2;
         let renderDistance = Math.min(maxRenderDistance, frontIndex);
+
+        if (i == frontIndex && frontIndex == resIndex) continue;
+        Circles[i].circle.height = size;
+        Circles[i].circle.width = size;
 
         if (
           Circles[i].type == "instant" ||
@@ -297,10 +301,10 @@ const PixiComponent = () => {
             }
           }
         }
-        if (circleSizeCorrect) {
-          Circles[i].circle.height = size;
-          Circles[i].circle.width = size;
-        }
+        // if (circleSizeCorrect) {
+        //   Circles[i].circle.height = size;
+        //   Circles[i].circle.width = size;
+        // }
       }
       for (let i = totalCircleCount - 1; i >= 0; i--) {
         let renderDistance = Math.min(maxRenderDistance, resIndex);
@@ -335,7 +339,8 @@ const PixiComponent = () => {
           }
         }
       }
-      const newLocation = coordinateFinder(frontIndex);
+      const newLocation = { x: Rx, y: Ry };
+      // coordinateFinder(frontIndex);
 
       if (frontIndex == resIndex) {
         popup.sprite.x = newLocation.x;
@@ -344,22 +349,48 @@ const PixiComponent = () => {
         popup.border.y = newLocation.y;
         popup.mask.x = newLocation.x;
         popup.mask.y = newLocation.y;
+
         if (!popup.inUse) {
-          if (Circles[frontIndex].circle.height == popup.R * 2) {
+          if (
+            Circles[frontIndex].circle.height == popup.R * 2 &&
+            Circles[frontIndex].circle.x == newLocation.x
+          ) {
             setPopUpInUse(true);
             popup.inUse = true;
           } else {
-            Circles[frontIndex].circle.height += popup.delay;
-            Circles[frontIndex].circle.width += popup.delay;
+            if (Circles[frontIndex].circle.height + popup.delay < popup.R * 2) {
+              let speed =
+                distFinder(
+                  Circles[frontIndex].circle.x,
+                  newLocation.x,
+                  Circles[frontIndex].circle.y,
+                  newLocation.y
+                ) /
+                ((popup.R * 2 - Circles[frontIndex].circle.height) /
+                  popup.delay);
+              let dist = distFinder(
+                Circles[frontIndex].circle.x,
+                newLocation.x,
+                Circles[frontIndex].circle.y,
+                newLocation.y
+              );
+              let angle = angleFinder(
+                Circles[frontIndex].circle.x,
+                newLocation.x,
+                Circles[frontIndex].circle.y,
+                newLocation.y
+              );
 
-            Circles[frontIndex].circle.height = Math.min(
-              Circles[frontIndex].circle.height,
-              popup.R * 2
-            );
-            Circles[frontIndex].circle.width = Math.min(
-              Circles[frontIndex].circle.width,
-              popup.R * 2
-            );
+              Circles[frontIndex].circle.x += Math.cos(angle) * speed * delta;
+              Circles[frontIndex].circle.y += Math.sin(angle) * speed * delta;
+              Circles[frontIndex].circle.height += popup.delay;
+              Circles[frontIndex].circle.width += popup.delay;
+            } else {
+              Circles[frontIndex].circle.x = newLocation.x;
+              Circles[frontIndex].circle.y = newLocation.y;
+              Circles[frontIndex].circle.height = popup.R * 2;
+              Circles[frontIndex].circle.width = popup.R * 2;
+            }
             circleSizeCorrect = false;
           }
         } else if (
@@ -372,6 +403,7 @@ const PixiComponent = () => {
       } else {
         if (popup.inUse || !circleSizeCorrect) {
           let psize = sizeFinder(frontIndex);
+          let loc = coordinateFinder(frontIndex);
           if (
             Math.abs(Circles[frontIndex].circle.height - psize) < popup.delay
           ) {
@@ -382,6 +414,29 @@ const PixiComponent = () => {
             popup.inUse = false;
             circleSizeCorrect = true;
           } else {
+            let speed =
+              distFinder(
+                Circles[frontIndex].circle.x,
+                loc.x,
+                Circles[frontIndex].circle.y,
+                loc.y
+              ) /
+              ((popup.R * 2 - Circles[frontIndex].circle.height) / popup.delay);
+            let dist = distFinder(
+              Circles[frontIndex].circle.x,
+              loc.x,
+              Circles[frontIndex].circle.y,
+              loc.y
+            );
+            let angle = angleFinder(
+              Circles[frontIndex].circle.x,
+              loc.x,
+              Circles[frontIndex].circle.y,
+              loc.y
+            );
+
+            Circles[frontIndex].circle.x += Math.cos(angle) * speed * delta;
+            Circles[frontIndex].circle.y += Math.sin(angle) * speed * delta;
             Circles[frontIndex].circle.height -= popup.delay;
             Circles[frontIndex].circle.width -= popup.delay;
           }
