@@ -30,15 +30,15 @@ export const Article = ({
         }}
         onClick={() => {
           setTransition(false);
-          setTimeout(() => {
-            router.push(
-              `/articles/${allArticles[currentDataIndex]?.fields.title}`
-            );
-          }, 200);
+          // setTimeout(() => {
+          //   router.push(
+          //     `/articles/${allArticles[currentDataIndex]?.fields.title}`
+          //   );
+          // }, 200);
         }}
       >
         <img
-          src={allArticles[currentDataIndex]?.fields.coverPic.fields.file.url}
+          src={allArticles[currentDataIndex]?.fields.coverPic?.fields?.file.url}
           draggable={"false"}
           alt="cover"
           className={styles.articleCover}
