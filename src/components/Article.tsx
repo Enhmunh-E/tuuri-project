@@ -1,11 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction } from "react";
-import { useMainProvider } from "../providers";
+import { useMainProvider } from "@providers";
 import styles from "../styles/article.module.css";
-import { fetchEntries } from "../util/contentfulArticles";
 
 export const Article = ({
   setTransition,

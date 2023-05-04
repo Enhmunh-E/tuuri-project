@@ -1,7 +1,6 @@
 const space = process.env.CONTENTFUL_SPACE_ID;
 const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN;
 
-console.log(space, accessToken);
 const client = require("contentful").createClient({
   space: space,
   accessToken: accessToken,

@@ -1,15 +1,13 @@
-import { Entry } from "contentful";
 import {
   createContext,
   useContext,
   useState,
   ReactNode,
   FC,
-  useEffect,
   Dispatch,
   SetStateAction,
 } from "react";
-import { ArticleType } from "../components/types";
+import { ArticleType } from "@components";
 
 interface MainProviderInterface {
   popUpLocation: PopUpLocationType | null;

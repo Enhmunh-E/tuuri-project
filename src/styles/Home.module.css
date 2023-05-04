@@ -8,10 +8,29 @@
   /* position: relative; */
   /* padding: 0 10vw 0 10vw; */
   width: 100vw;
-  padding: 0 calc((100vw - 1280px) / 2);
+  padding: 0 32px;
   padding-top: 60px;
   display: flex;
   align-items: center;
   /* justify-content: center; */
   flex-direction: column;
+}
+.homeTitle {
+  font-family: "Cormorant", serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 34px;
+  color: #252223;
+}
+.homeLabel {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+
+  color: #252223;
 }

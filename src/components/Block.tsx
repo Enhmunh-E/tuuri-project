@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../styles/block.module.css";
-import { ArticleType } from "./types";
 export const Block = ({ data }: { data: any }) => {
   const type = data.sys.contentType.sys.id;
   return (

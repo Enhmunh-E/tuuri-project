@@ -1,7 +1,6 @@
-import { PathConstraintPositionTimeline } from "@pixi-spine/runtime-4.1";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import { useMainProvider } from "../providers";
+import { useMainProvider } from "@providers";
 import { ArticleType } from "./types";
 
 const List = () => {

@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as PIXI from "pixi.js";
 import "pixi-spine";
 import { useMainProvider } from "../providers";
-import { useScrollContext } from "../providers";
 
 const PixiComponent = () => {
   let gameCanvas = <></>;

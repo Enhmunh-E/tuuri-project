@@ -1,0 +1,27 @@
+.headerIcon {
+  height: 48px;
+  width: 172px;
+  position: relative;
+}
+.headerContainer {
+  height: 60px;
+  width: 100%;
+  padding: 0px calc((100vw - 1280px) / 2);
+  /* // borderBottom: 1px solid #FFC909; */
+  display: flex;
+  align-items: center;
+  position: fixed;
+  background: white;
+  top: 0;
+  z-index: 10;
+}
+
+@media screen and (max-width: 900px) {
+  .headerIcon {
+    height: 36px;
+    width: 150.5px;
+  }
+  .headerContainer {
+    padding: 0px 16px;
+  }
+}

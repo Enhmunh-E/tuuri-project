@@ -1,11 +1,4 @@
-import {
-  createContext,
-  FC,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, FC, ReactNode, useContext } from "react";
 
 interface ScrollContextInterface {
   scroll?: any;

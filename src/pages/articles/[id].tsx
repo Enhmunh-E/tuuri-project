@@ -1,11 +1,9 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
-import { Header } from "../../components";
-import { Block } from "../../components/Block";
-import { ArticleType } from "../../components/types";
-import { useMainProvider } from "../../providers";
+import { Header, Block, ArticleType } from "@components";
+import { useMainProvider } from "@providers";
 import styles from "../../styles/article.module.css";
-import { fetchEntries } from "../../util/contentfulArticles";
+import { fetchEntries } from "@utils";
 import { NextSeo } from "next-seo";
 export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
   const { currentDataIndex } = useMainProvider();

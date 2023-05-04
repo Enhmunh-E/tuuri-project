@@ -1,14 +1,9 @@
-import { Header } from "../components";
 import styles from "../styles/Home.module.css";
 import dynamic from "next/dynamic";
-import { createClient, Entry } from "contentful";
-import { useMainProvider } from "../providers";
 import { useEffect, useState } from "react";
-import { Article } from "../components/Article";
-import { fetchEntries } from "../util/contentfulArticles";
-import { ArticleType } from "../components/types";
-import { ScrollProvider } from "../providers";
-import List from "../components/List";
+import { useMainProvider } from "@providers";
+import { fetchEntries } from "@utils";
+import { ArticleType } from "@components";
 
 const Pixi = dynamic(import("../components/Pixi"), { ssr: false });
 
@@ -52,7 +47,6 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
     }, 400);
     return () => clearTimeout(timeOut);
   }, []);
-  // if (loading) return <HomeLoading />;
   return (
     <div
       className={styles.container}
@@ -61,8 +55,54 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
         opacity: transition ? 1 : 0,
       }}
     >
-      <div className="rel">
-        <ScrollProvider>
+      <div
+        style={{
+          width: "100%",
+          marginTop: "48px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+        }}
+      >
+        <div className={styles.homeTitle}>
+          Бид түүхийг хүүрнэе
+          <br />
+          Та ирээдүйг бүтээ
+        </div>
+        <div className={styles.homeLabel}>
+          Монгол хүн танд түүхийн боловсролыг
+          <br />
+          шинэлэг байдлаар хүргэж байна.
+        </div>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          marginTop: "48px",
+          display: "flex",
+          flexDirection: "row",
+          gap: "12px",
+        }}
+      >
+        <input
+          type="text"
+          style={{
+            border: "1px solid rgba(47, 42, 46, 0.15)",
+            background: "white",
+            height: "56px",
+            fontFamily: "Montserrat",
+            fontSize: "14px",
+            lineHeight: "17px",
+            outline: "none",
+            color: "#2F2A2E",
+            padding: "20px",
+            borderRadius: 8,
+          }}
+          placeholder="Хайх"
+        />
+      </div>
+      {/* <div className="rel"> */}
+      {/* <ScrollProvider>
           <div
             id="pixi-container"
             style={{ display: "inline-flex", height: "100vh", width: "100vw" }}
@@ -71,8 +111,8 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             <Pixi />
           </div>
           <List />
-        </ScrollProvider>
-      </div>
+        </ScrollProvider> */}
+      {/* </div> */}
     </div>
   );
 };
