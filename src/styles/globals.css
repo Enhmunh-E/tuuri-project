@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
@@ -61,15 +64,7 @@ a {
   width: 80vw;
 } */
 
-.carousel {
-  width: 300px;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translate(0, -50%);
-}
-
-.sidebar-element {
+/* .sidebar-element {
   display: flex !important;
   height: 50px;
   margin: 10px 0 10px;
@@ -96,7 +91,7 @@ a {
 .sidebar-element > .year {
   width: 20%;
   margin-right: 10%;
-}
+} */
 
 .line {
   background-color: orange;
@@ -113,16 +108,15 @@ a {
 }
 
 .list {
-  height: 500px;
-  width: 400px;
+  /* height: 500px; */
+  width: 100vw;
   position: absolute;
-  overflow: auto;
+  bottom: 0;
+  /* overflow: auto; */
   cursor: grab;
-  overflow-x: hidden;
-  top: 50%;
-  left: 0;
-  transform: translate(0, -50%);
-  /* scroll-snap-type: y mandatory; */
+  overflow-x: scroll;
+  display: flex;
+  scroll-snap-type: x mandatory;
 }
 
 /* .selected {
@@ -134,13 +128,15 @@ a {
 } */
 
 .list-element {
-  height: 100px;
+  height: auto;
+  /* width: 40vw; */
   display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   /* justify-content: space-between; */
   color: var(--black);
-  /* scroll-snap-align: start; */
+  scroll-snap-align: center;
 }
 
 .list-element > .title {
@@ -150,7 +146,6 @@ a {
   /* padding-right: 10px; */
   padding: 10px 10px 10px 20px;
   font-size: 1rem;
-  width: 70%;
 }
 
 .list-element > .year {
@@ -161,11 +156,11 @@ a {
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
   font-size: 0.8rem;
-  border-right: 2px solid orange;
+  border-bottom: 2px solid orange;
   /* width: 23%; */
   margin-right: 0;
-  width: 100px;
 }
 
 .year-content {

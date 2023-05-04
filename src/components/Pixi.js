@@ -249,7 +249,7 @@ const PixiComponent = () => {
 
     app.ticker.add((delta) => {
       resIndex = Math.floor(
-        ((document.getElementById("list").scrollTop / 100) *
+        ((document.getElementById("list").scrollLeft / 192) *
           (totalCircleCount - circlePerLoop * 2 - 1)) /
           articlelen +
           circlePerLoop * 2
