@@ -13,7 +13,7 @@ export const Block = ({ data }: { data: any }) => {
             : type == "articleType2" || type == "articleType4"
             ? "row-reverse"
             : "column",
-        gap: "80px",
+
         alignItems: type == "articleType3" ? "center" : "normal",
       }}
     >

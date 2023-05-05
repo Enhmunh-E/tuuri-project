@@ -61,10 +61,10 @@ const PixiComponent = () => {
       pixiSizeTime = 40,
       pixiSizeRSpeed = (bR - sR) / pixiSizeTime,
       pixiSizerSpeed = (br - sr) / pixiSizeTime,
-      articlelen = 10,
+      articlelen = allArticles.length,
       totalScroll = 100 * (articlelen - 5);
 
-    let waveSize = 10,
+    let waveSize = (10 * sR) / 250,
       waveAngle = 60;
 
     const wobble = (x) => {
@@ -168,7 +168,6 @@ const PixiComponent = () => {
       });
       app.stage.addChild(circle);
     }
-    console.log(appWidth, appHeight);
     let popup = {
       container: new PIXI.Container(),
       sprite: new PIXI.Sprite.from("/spiral/contentTMP.png"),
@@ -284,7 +283,7 @@ const PixiComponent = () => {
     app.ticker.add((delta) => {
       visibleState = document
         .getElementById("main-page-scroll")
-        .style.transform.includes("50%");
+        ?.style.transform.includes("50%");
 
       if (visibleState) {
         if (R == sR) pixiSizeCorrect = true;
@@ -325,7 +324,7 @@ const PixiComponent = () => {
       }
 
       resIndex = Math.floor(
-        ((document.getElementById("list").scrollLeft / 256) *
+        ((document.getElementById("list")?.scrollLeft / 256) *
           (totalCircleCount - circlePerLoop * 2 - 1)) /
           articlelen +
           circlePerLoop * 2
@@ -528,7 +527,7 @@ const PixiComponent = () => {
       app.stop();
       app.view.remove();
     };
-  }, []);
+  }, [allArticles]);
 
   return gameCanvas;
 };

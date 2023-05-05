@@ -13,11 +13,11 @@ const ListMobile = () => {
   const cardWidth = 256;
   const [howManyCards, setHowManyCards] = useState(5);
   useEffect(() => {
-    let howMany = Math.floor(window.innerWidth / cardWidth);
-    if (howMany == 1) {
-      setHowManyCards(3);
-      return;
-    }
+    let howMany = Math.floor(window.innerWidth / cardWidth) + 2;
+    // if (howMany == 1) {
+    //   setHowManyCards(3);
+    //   return;
+    // }
     howMany = howMany % 2 == 0 ? howMany + 1 : howMany;
     setHowManyCards(howMany);
   }, []);
@@ -31,6 +31,11 @@ const ListMobile = () => {
     const ar = [...dummyArray, ...allArticles, ...dummyArray];
     return ar;
   }, [allArticles, howManyCards]);
+  useEffect(() => {
+    scrollRef?.current?.scrollTo({
+      left: cardWidth * howManyCards + (howManyCards - 1) * 16,
+    });
+  }, [cardWidth, howManyCards]);
   useEffect(() => {
     const handleScroll: EventListener = (e) => {
       const targetDiv: HTMLDivElement = e.target as HTMLDivElement;

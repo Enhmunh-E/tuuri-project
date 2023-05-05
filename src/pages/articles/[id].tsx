@@ -58,8 +58,16 @@ export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
       >
         <div className={styles.articleTitle}>{article?.fields.title}</div>
         <div className={styles.articleDescription}>
-          Унших цаг {article?.fields?.readTime} мин
-          {article?.fields.topic.map((topic: string) => ` • ${topic}`)}
+          <span className="block">
+            Унших цаг {article?.fields?.readTime} мин
+          </span>
+
+          {article?.fields?.topic?.map((topic: string) => (
+            <>
+              <span className="block">•</span>
+              <span className="block">{topic}</span>
+            </>
+          ))}
         </div>
       </div>
       <div
