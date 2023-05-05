@@ -32,15 +32,15 @@ export type ArticleType = {
 };
 
 export type BlockType = {
-    // image?: {
-    //     fields: {
-    //         description: string;
-    //         file: {
-    //             url: string;
-    //         };
-    //         title: string;
-    //     };
-    // };
+    image?: {
+        fields: {
+            description: string;
+            file: {
+                url: string;
+            };
+            title: string;
+        };
+    };
     fields?: {
         texts?: any;
         title?: any;
