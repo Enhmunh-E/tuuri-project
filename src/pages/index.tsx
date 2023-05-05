@@ -57,7 +57,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
   }, []);
   return (
     <div
-      className="h-screen"
+      className="full-height-mobile"
       // className={styles.container}
       style={{
         transition: "all 400ms",
@@ -65,11 +65,26 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
       }}
     >
       <motion.div
+        id="pixi-container"
+        style={{
+          display: "inline-flex",
+          height: "100vh",
+          width: "100vw",
+          position: "fixed",
+          opacity: visibleState === "search" ? 0.8 : 1,
+          overflow: "visible",
+        }}
+      >
+        <Article setTransition={setTransition} />
+        <Pixi />
+      </motion.div>
+      <motion.div
         className="overflow-scroll"
         style={{
           translateY: visibleState === "search" ? "0%" : "-50%",
           transition: "all 400ms ease",
         }}
+        id="main-page-scroll"
       >
         {/* Top */}
         <motion.div
@@ -77,7 +92,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             opacity: visibleState === "search" ? 1 : 0,
             transition: "all 400ms ease",
           }}
-          className="h-screen relative pt-16 p-8 flex items-center flex-col"
+          className="full-height-mobile relative pt-16 p-8 flex items-center flex-col"
         >
           <div
             style={{
@@ -126,6 +141,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             onClick={() => setVisibleState("slide")}
           />
         </motion.div>
+
         {/* Bottom */}
         <motion.div
           style={{
@@ -133,20 +149,8 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             transition: "all 400ms ease",
             overflow: "hidden",
           }}
-          className="h-screen relative p-8 pt-20 flex items-center flex-col "
+          className="full-height-mobile relative p-8 pt-20 flex items-center flex-col "
         >
-          <div
-            id="pixi-container"
-            style={{
-              display: "inline-flex",
-              height: "100vh",
-              width: "100vw",
-              marginTop: "-60px",
-            }}
-          >
-            <Article setTransition={setTransition} />
-            <Pixi visibleState={visibleState} />
-          </div>
           <ListMobile />
           <AnimatedToScroll
             text=""
