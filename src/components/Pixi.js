@@ -83,6 +83,7 @@ const PixiComponent = () => {
       let elapsedAngle = angle + elapsed / 3;
       let radius =
         r +
+        // Math.sin((elapsedAngle / waveAngle) * 2 * Math.PI) * waveSize +
         wobble(elapsedAngle) * waveSize +
         ((R - r) / renderDistance) * (index - (frontIndex - renderDistance));
       let x =
@@ -106,7 +107,13 @@ const PixiComponent = () => {
       size -= angleDistance * reductionPerAngle;
       let distance = frontIndex - index,
         reductionPerDistance = 0.003;
+
       size -= distance * reductionPerDistance;
+      //front 2 loop size reduction
+      if (index <= circlePerLoop * 2) {
+        size -= (circlePerLoop * 2 - index) * 0.03;
+      }
+
       size = Math.max(size, 0.001);
       return size;
     };
@@ -140,7 +147,10 @@ const PixiComponent = () => {
       circle.zIndex = i;
       circle.anchor.x = 0.5;
       circle.anchor.y = 0.5;
-
+      if (i <= circlePerLoop * 2) {
+        circle.alpha = i / (circlePerLoop * 2);
+      }
+      // circle.alpha = 0.7 + (i / totalCircleCount) * 0.3;
       let random = Math.random() * 50,
         type = "instant",
         speed = 10;
@@ -158,20 +168,20 @@ const PixiComponent = () => {
       });
       app.stage.addChild(circle);
     }
-
+    console.log(appWidth, appHeight);
     let popup = {
       container: new PIXI.Container(),
       sprite: new PIXI.Sprite.from("/spiral/contentTMP.png"),
       mask: new PIXI.Graphics(),
       border: new PIXI.Sprite.from("/spiral/border.png"),
       borderSize: 2,
-      R: 80,
+      R: Math.min(appWidth, appHeight) * 0.2,
       inUse: false,
       location: {
         x: 0,
         y: 0,
       },
-      delay: 5,
+      delay: 15,
     };
 
     function SpriteDataSet(
@@ -260,16 +270,16 @@ const PixiComponent = () => {
     //   setScroll(e.deltaY);
     // });
 
-    window.addEventListener("pointermove", (e) => {
-      let x = window.innerWidth / 2 - e.x,
-        y = window.innerHeight / 2 - e.y;
-      let Rchange = 12,
-        rChange = 2.5;
-      Rx = appWidth / 2 + x / Rchange;
-      Ry = appHeight / 2 + (y / Rchange) * aspectRatio;
-      rX = appWidth / 2 + x / rChange;
-      rY = appHeight / 2 + (y / rChange) * aspectRatio;
-    });
+    // window.addEventListener("pointermove", (e) => {
+    //   let x = window.innerWidth / 2 - e.x,
+    //     y = window.innerHeight / 2 - e.y;
+    //   let Rchange = 12,
+    //     rChange = 2.5;
+    //   Rx = appWidth / 2 + x / Rchange;
+    //   Ry = appHeight / 2 + (y / Rchange) * aspectRatio;
+    //   rX = appWidth / 2 + x / rChange;
+    //   rY = appHeight / 2 + (y / rChange) * aspectRatio;
+    // });
 
     app.ticker.add((delta) => {
       visibleState = document
@@ -279,26 +289,36 @@ const PixiComponent = () => {
       if (visibleState) {
         if (R == sR) pixiSizeCorrect = true;
         else {
-          if (R - pixiSizeRSpeed <= sR) {
+          if (Math.abs(sR - R) <= pixiSizeRSpeed) {
             pixiSizeCorrect = true;
             R = sR;
             r = sr;
           } else {
-            R -= pixiSizeRSpeed;
-            r -= pixiSizerSpeed;
+            if (R < sR) {
+              R += pixiSizeRSpeed;
+              r += pixiSizerSpeed;
+            } else {
+              R -= pixiSizeRSpeed;
+              r -= pixiSizerSpeed;
+            }
             pixiSizeCorrect = false;
           }
         }
       } else {
         if (R == bR) pixiSizeCorrect = true;
         else {
-          if (R + pixiSizeRSpeed >= bR) {
+          if (Math.abs(bR - R) <= pixiSizeRSpeed) {
             pixiSizeCorrect = true;
             R = bR;
             r = br;
           } else {
-            R += pixiSizeRSpeed;
-            r += pixiSizerSpeed;
+            if (R < bR) {
+              R += pixiSizeRSpeed;
+              r += pixiSizerSpeed;
+            } else {
+              R -= pixiSizeRSpeed;
+              r -= pixiSizerSpeed;
+            }
             pixiSizeCorrect = false;
           }
         }
@@ -368,7 +388,7 @@ const PixiComponent = () => {
         if (i < resIndex - renderDistance || i > resIndex) {
           if (
             Circles[i].used &&
-            dotRemoved < Math.abs(frontIndex - resIndex) / 10 &&
+            dotRemoved < Math.abs(frontIndex - resIndex) / 5 &&
             circleSizeCorrect
           ) {
             dotRemoved++;
@@ -385,7 +405,7 @@ const PixiComponent = () => {
         if (i >= resIndex - renderDistance && i <= resIndex) {
           if (
             !Circles[i].used &&
-            dotRemoved < Math.abs(frontIndex - resIndex) / 10 &&
+            dotRemoved < Math.abs(frontIndex - resIndex) / 5 &&
             circleSizeCorrect
           ) {
             dotRemoved++;
@@ -413,6 +433,9 @@ const PixiComponent = () => {
           ) {
             setPopUpInUse(true);
             popup.inUse = true;
+
+            popup.location = newLocation;
+            setPopUpLocation({ ...newLocation });
           } else {
             if (Circles[frontIndex].circle.height + popup.delay < popup.R * 2) {
               let speed =

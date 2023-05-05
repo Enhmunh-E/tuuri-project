@@ -37,7 +37,8 @@ const data = [
 // };
 
 const Home = ({ articles }: { articles: ArticleType[] }) => {
-  const { setAllArticles, currentDataIndex } = useMainProvider();
+  const { setAllArticles, currentDataIndex, popUpInUse, setPopUpInUse } =
+    useMainProvider();
   const [transition, setTransition] = useState(false);
   const [visibleState, setVisibleState] = useState("search");
   const dummy: ArticleType = {} as ArticleType;
@@ -75,7 +76,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
           overflow: "visible",
         }}
       >
-        <Article setTransition={setTransition} />
+        {/* <Article setTransition={setTransition} /> */}
         <Pixi />
       </motion.div>
       <motion.div
@@ -83,6 +84,7 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
         style={{
           translateY: visibleState === "search" ? "0%" : "-50%",
           transition: "all 400ms ease",
+          // height: "200vh",
         }}
         id="main-page-scroll"
       >
@@ -138,7 +140,10 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
           <AnimatedToScroll
             position="bottom"
             text="Бичвэр унших"
-            onClick={() => setVisibleState("slide")}
+            onClick={() => {
+              setPopUpInUse(true);
+              setVisibleState("slide");
+            }}
           />
         </motion.div>
 
@@ -149,14 +154,28 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
             transition: "all 400ms ease",
             overflow: "hidden",
           }}
-          className="full-height-mobile relative p-8 pt-20 flex items-center flex-col "
+          className="full-height-mobile relative p-8 pt-20 pb-0 flex items-center flex-col "
         >
+          <div
+            style={{
+              height: "100vh",
+              width: "100vw",
+              position: "absolute",
+              marginTop: "-72px",
+              overflow: "visible",
+            }}
+          >
+            <Article setTransition={setTransition} />
+          </div>
           <ListMobile />
           <AnimatedToScroll
             text=""
             bordered={false}
             position="top"
-            onClick={() => setVisibleState("search")}
+            onClick={() => {
+              setPopUpInUse(false);
+              setVisibleState("search");
+            }}
           />
         </motion.div>
       </motion.div>
