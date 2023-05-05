@@ -188,7 +188,14 @@ const Home = ({ articles }: { articles: ArticleType[] }) => {
 export async function getStaticProps() {
     const res = await fetchEntries();
 
-    const articles = res?.filter((p) => p.sys.contentType.sys.id == "article");
+    const articles = res
+        ?.filter((p) => p.sys.contentType.sys.id == "article")
+        .sort((a, b) => {
+            if (a.fields.eventDate < b.fields.eventDate) return -1;
+            if (b.fields.eventDate < a.fields.eventDate) return 1;
+            return 0;
+        });
+    // const articl
     return {
         props: {
             articles,
