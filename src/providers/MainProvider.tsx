@@ -6,6 +6,7 @@ import {
   FC,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 import { ArticleType } from "@components";
 
@@ -38,6 +39,15 @@ export const MainProvider: FC<MainProviderProps> = ({ children }) => {
     null
   );
   const [popUpInUse, setPopUpInUse] = useState(true);
+  useEffect(() => {
+    const resizeHandler = () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    };
+    window.addEventListener("resize", resizeHandler);
+    window.removeEventListener("resize", resizeHandler);
+  }, []);
+
   return (
     <MainContext.Provider
       value={{

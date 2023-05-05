@@ -3,7 +3,8 @@ import * as PIXI from "pixi.js";
 import "pixi-spine";
 import { useMainProvider } from "../providers";
 
-const PixiComponent = ({ visibleState }) => {
+const PixiComponent = () => {
+  let visibleState = false;
   let gameCanvas = <></>;
   let app = PIXI.Application;
   const {
@@ -33,8 +34,13 @@ const PixiComponent = ({ visibleState }) => {
 
     let elapsed = 0.0;
     // Radius of large and small circle
-    let R = 200,
-      r = 50;
+    let R = 500,
+      r = 10;
+
+    let sR = Math.min(250, appWidth / 2 - 20),
+      sr = 5,
+      bR = 500,
+      br = 10;
 
     // Cordinates of the circles
     let Rx = appWidth / 2,
@@ -51,15 +57,33 @@ const PixiComponent = ({ visibleState }) => {
       frontIndex = totalCircleCount - 1,
       resIndex = totalCircleCount - 1,
       circleSizeCorrect = true,
+      pixiSizeCorrect = true,
+      pixiSizeTime = 40,
+      pixiSizeRSpeed = (bR - sR) / pixiSizeTime,
+      pixiSizerSpeed = (br - sr) / pixiSizeTime,
       articlelen = 10,
       totalScroll = 100 * (articlelen - 5);
+
+    let waveSize = 10,
+      waveAngle = 60;
+
+    const wobble = (x) => {
+      return (
+        Math.sin((2 * Math.PI * x) / 360) +
+        0.5 * Math.sin((2 * Math.PI * 3 * x) / 360) +
+        0.3 * Math.sin((2 * Math.PI * 5 * x) / 360) +
+        0.2 * Math.sin((2 * Math.PI * 7 * x) / 360)
+      );
+    };
 
     const coordinateFinder = (index) => {
       let angle =
         (((360 / circlePerLoop / 2 + 360) / circlePerLoop) * index) % 360;
       let renderDistance = Math.min(maxRenderDistance, frontIndex);
+      let elapsedAngle = angle + elapsed / 3;
       let radius =
         r +
+        wobble(elapsedAngle) * waveSize +
         ((R - r) / renderDistance) * (index - (frontIndex - renderDistance));
       let x =
         radius * Math.cos((angle * Math.PI) / 180) +
@@ -248,6 +272,38 @@ const PixiComponent = ({ visibleState }) => {
     });
 
     app.ticker.add((delta) => {
+      visibleState = document
+        .getElementById("main-page-scroll")
+        .style.transform.includes("50%");
+
+      if (visibleState) {
+        if (R == sR) pixiSizeCorrect = true;
+        else {
+          if (R - pixiSizeRSpeed <= sR) {
+            pixiSizeCorrect = true;
+            R = sR;
+            r = sr;
+          } else {
+            R -= pixiSizeRSpeed;
+            r -= pixiSizerSpeed;
+            pixiSizeCorrect = false;
+          }
+        }
+      } else {
+        if (R == bR) pixiSizeCorrect = true;
+        else {
+          if (R + pixiSizeRSpeed >= bR) {
+            pixiSizeCorrect = true;
+            R = bR;
+            r = br;
+          } else {
+            R += pixiSizeRSpeed;
+            r += pixiSizerSpeed;
+            pixiSizeCorrect = false;
+          }
+        }
+      }
+
       resIndex = Math.floor(
         ((document.getElementById("list").scrollLeft / 256) *
           (totalCircleCount - circlePerLoop * 2 - 1)) /
@@ -342,7 +398,7 @@ const PixiComponent = ({ visibleState }) => {
       const newLocation = { x: Rx, y: Ry };
       // coordinateFinder(frontIndex);
 
-      if (frontIndex == resIndex) {
+      if (frontIndex == resIndex && pixiSizeCorrect && visibleState) {
         popup.sprite.x = newLocation.x;
         popup.sprite.y = newLocation.y;
         popup.border.x = newLocation.x;
