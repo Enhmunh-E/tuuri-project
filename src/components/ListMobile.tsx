@@ -55,7 +55,7 @@ const ListMobile = () => {
       style={{
         width: howManyCards * cardWidth + "px",
         left: `calc((100vw - ${howManyCards * cardWidth}px) / 2)`,
-        paddingBottom: "32px",
+        paddingBottom: "48px",
       }}
       ref={scrollRef}
     >
