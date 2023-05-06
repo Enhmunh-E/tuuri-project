@@ -15,6 +15,7 @@ export const Article = ({
   const { popUpLocation, popUpInUse, allArticles, currentDataIndex } =
     useMainProvider();
   const router = useRouter();
+  console.log(currentDataIndex, allArticles[currentDataIndex]?.fields.title);
   return (
     <div
       className={styles.articleContainer}

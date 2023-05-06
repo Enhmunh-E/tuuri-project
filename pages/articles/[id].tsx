@@ -8,13 +8,9 @@ import styles from "../../styles/article.module.css";
 import { fetchEntries } from "../../util/contentfulArticles";
 import { NextSeo } from "next-seo";
 export const AritclePage = ({ articles }: { articles: ArticleType[] }) => {
-  const { currentDataIndex } = useMainProvider();
   const [isRelay, setIsRelay] = useState(true);
   const router = useRouter();
   const article = useMemo(() => {
-    if (articles[currentDataIndex]) {
-      return articles[currentDataIndex];
-    }
     return articles.find((article) => article.fields.title == router.query.id);
   }, [articles]);
   useEffect(() => {
