@@ -4,6 +4,7 @@ import { MainProvider } from "../providers";
 import { Header } from "../components";
 import { Analytics } from "@vercel/analytics/react";
 import { useLayoutEffect } from "react";
+import Head from "next/head";
 function MyApp({ Component, pageProps }: AppProps) {
   useLayoutEffect(() => {
     if (window?.innerWidth < 1024) {
@@ -12,6 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
   return (
     <>
+      <Head>
+        <title>Tuuri.mn</title>
+        <meta property="og:title" content="Tuuri.mn" key="title" />
+      </Head>
       <MainProvider>
         <Header />
         <Component {...pageProps} />
