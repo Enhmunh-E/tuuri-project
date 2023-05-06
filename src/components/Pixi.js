@@ -452,6 +452,7 @@ const PixiComponent = () => {
                     ) {
                         setPopUpInUse(true);
                         popup.inUse = true;
+                        Circles[frontIndex].circle.alpha = 0;
 
                         popup.location = newLocation;
                         setPopUpLocation({ ...newLocation });
@@ -545,6 +546,7 @@ const PixiComponent = () => {
                             Math.cos(angle) * speed * delta;
                         Circles[frontIndex].circle.y +=
                             Math.sin(angle) * speed * delta;
+                        Circles[frontIndex].circle.alpha = 1;
                         Circles[frontIndex].circle.height -= popup.delay;
                         Circles[frontIndex].circle.width -= popup.delay;
                     }
