@@ -9,9 +9,10 @@ export const Header = () => {
         <div className={styles.headerIcon}>
           <Link href={"/"}>
             <Image
-              src={"/assets/tuuriLogo.svg"}
-              layout="fill"
+              src={"/assets/tuuriLogo.png"}
               alt="logo"
+              height={32}
+              width={117}
               style={{
                 cursor: "pointer",
               }}
