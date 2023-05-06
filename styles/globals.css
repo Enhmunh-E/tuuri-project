@@ -303,3 +303,6 @@ a {
   background: transparent;
   border-radius: 5px;
 }
+#nprogress .bar {
+  background: #ffc909 !important;
+}
