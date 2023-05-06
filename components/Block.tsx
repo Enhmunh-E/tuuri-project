@@ -20,7 +20,7 @@ export const Block = ({ data }: { data: any }) => {
     >
       {type !== "articleType3" && (
         <div className={styles.blockText}>
-          {data.fields.texts.map(
+          {data.fields?.texts.map(
             (
               text: {
                 fields: {
@@ -33,10 +33,10 @@ export const Block = ({ data }: { data: any }) => {
                 key={`text-${index}`}
                 style={{
                   marginBottom:
-                    index + 1 == data.fields.texts.length ? "0px" : "24px",
+                    index + 1 == data.fields?.texts.length ? "0px" : "24px",
                 }}
               >
-                {text.fields.text}
+                {text.fields?.text}
               </div>
             )
           )}

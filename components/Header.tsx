@@ -10,6 +10,8 @@ export const Header = () => {
           <Image
             src={TuuriLogo}
             alt="logo"
+            height={48}
+            width={172}
             style={{
               cursor: "pointer",
             }}

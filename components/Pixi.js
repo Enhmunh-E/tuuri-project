@@ -52,7 +52,7 @@ const PixiComponent = () => {
       frontIndex = totalCircleCount - 1,
       resIndex = totalCircleCount - 1,
       circleSizeCorrect = true,
-      articlelen = 10,
+      articlelen = 19,
       totalScroll = 100 * (articlelen - 5);
 
     const coordinateFinder = (index) => {
